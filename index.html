@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Activator for Google Ads MCC</title>
+    <style>
+        :root {
+            --primary: #4285F4;
+            --primary-dark: #3367D6;
+            --secondary: #34A853;
+            --danger: #EA4335;
+            --warning: #FBBC05;
+            --light: #F8F9FA;
+            --dark: #202124;
+            --gray: #5F6368;
+            --gray-light: #dadce0;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+            animation: gradientShift 10s ease infinite;
+            background-size: 400% 400%;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: slideDown 0.8s ease;
+        }
+        
+        .login-title {
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .login-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+        }
+        
+        .main-content {
+            display: none;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.8s ease;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            animation: slideUp 0.5s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            font-size: 1.8rem;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        textarea, input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        textarea:focus, input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #2d9248;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 168, 83, 0.3);
+        }
+        
+        .btn-large {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+        
+        .event-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .event-item {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            animation: pulse 2s infinite;
+        }
+        
+        .event-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .event-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .event-open { background: var(--primary); }
+        .event-recharge { background: var(--secondary); }
+        .event-login { background: var(--warning); }
+        .event-register { background: #9C27B0; }
+        
+        .progress-container {
+            margin-top: 30px;
+            background: var(--light);
+            border-radius: 8px;
+            overflow: hidden;
+            height: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-image: linear-gradient(
+                -45deg, 
+                rgba(255, 255, 255, 0.2) 25%, 
+                transparent 25%, 
+                transparent 50%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                rgba(255, 255, 255, 0.2) 75%, 
+                transparent 75%, 
+                transparent
+            );
+            z-index: 1;
+            background-size: 50px 50px;
+            animation: move 2s linear infinite;
+        }
+        
+        @keyframes move {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+        
+        .status-container {
+            margin-top: 30px;
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .status-item {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .status-success {
+            background: rgba(52, 168, 83, 0.1);
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .status-error {
+            background: rgba(234, 67, 53, 0.1);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .status-processing {
+            background: rgba(66, 133, 244, 0.1);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .status-icon {
+            font-size: 1.5rem;
+        }
+        
+        .success { color: var(--secondary); }
+        .error { color: var(--danger); }
+        .processing { color: var(--primary); }
+        
+        .result-summary {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .summary-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            animation: bounceIn 1s;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .summary-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .summary-success { color: var(--secondary); }
+        .summary-error { color: var(--danger); }
+        .summary-total { color: var(--primary); }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: white;
+            font-size: 0.9rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @media (max-width: 768px) {
+            .event-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-summary {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="login-container">
+        <div class="login-box">
+            <h1 class="login-title"><i class="fas fa-lock"></i> Event Activator</h1>
+            <p style="margin-bottom: 20px; color: var(--gray);">Masukkan sandi untuk mengakses aplikasi</p>
+            <input type="password" id="password" class="login-input" placeholder="Masukkan sandi">
+            <button id="login-btn" class="login-btn">Masuk</button>
+            <p id="login-error" style="color: var(--danger); margin-top: 10px; display: none;">Sandi salah! Coba lagi.</p>
+        </div>
+    </div>
+    
+    <!-- Main Application -->
+    <div class="main-content" id="main-content">
+        <div class="container">
+            <header>
+                <h1><i class="fas fa-rocket floating"></i> Event Activator for Google Ads MCC</h1>
+                <p class="subtitle">Aktifkan event konversi untuk aplikasi Android di multiple MCC Google Ads secara otomatis dan massal</p>
+            </header>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="input">Input Data</div>
+                <div class="tab" data-tab="progress">Progress & Status</div>
+                <div class="tab" data-tab="results">Hasil</div>
+            </div>
+            
+            <div class="tab-content active" id="input-tab">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-list"></i> Daftar MCC & Aplikasi</h2>
+                    
+                    <div class="input-group">
+                        <label for="mcc-list">Daftar MCC IDs (satu per baris)</label>
+                        <textarea id="mcc-list" placeholder="Contoh: 
+123-456-7890
+234-567-8901
+345-678-9012"></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="app-identifier">Identifikasi Aplikasi</label>
+                        <div style="display: flex; gap: 10px;">
+                            <select id="identifier-type" style="flex: 1;">
+                                <option value="package">Nama Paket (Package Name)</option>
+                                <option value="link">Link Play Store</option>
+                                <option value="link-id">Link ID</option>
+                            </select>
+                            <input type="text" id="app-identifier" placeholder="Contoh: com.EightCubes" style="flex: 3;">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Event yang akan Diaktifkan</label>
+                        <div class="event-list">
+                            <div class="event-item">
+                                <div class="event-icon event-open"><i class="fas fa-door-open"></i></div>
+                                <div>
+                                    <strong>first_open</strong>
+                                    <div style="font-size: 0.8rem; color: var(--gray);">Pembukaan pertama aplikasi</div>
+                                </div>
+                            </div>
+                            <div class="event-item">
+                                <div class="event-icon event-register"><i class="fas fa-user-plus"></i></div>
+                                <div>
+                                    <strong>register</strong>
+                                    <div style="font-size: 0.8rem; color: var(--gray);">Pendaftaran pengguna baru</div>
+                                </div>
+                            </div>
+                            <div class="event-item">
+                                <div class="event-icon event-login"><i class="fas fa-sign-in-alt"></i></div>
+                                <div>
+                                    <strong>login</strong>
+                                    <div style="font-size: 0.8rem; color: var(--gray);">Login pengguna</div>
+                                </div>
+                            </div>
+                            <div class="event-item">
+                                <div class="event-icon event-recharge"><i class="fas fa-coins"></i></div>
+                                <div>
+                                    <strong>firstrecharge</strong>
+                                    <div style="font-size: 0.8rem; color: var(--gray);">Isi ulang pertama</div>
+                                </div>
+                            </div>
+                            <div class="event-item">
+                                <div class="event-icon event-recharge"><i class="fas fa-money-bill-wave"></i></div>
+                                <div>
+                                    <strong>recharge</strong>
+                                    <div style="font-size: 0.8rem; color: var(--gray);">Isi ulang berulang</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="activate-btn" class="btn btn-primary btn-large pulse">
+                        <i class="fas fa-bolt"></i> Aktifkan Event
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="progress-tab">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-tasks"></i> Progress Aktivasi</h2>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    
+                    <div class="status-container" id="status-container">
+                        <!-- Status items will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="results-tab">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-chart-bar"></i> Hasil Aktivasi</h2>
+                    
+                    <div class="result-summary">
+                        <div class="summary-card">
+                            <i class="fas fa-check-circle summary-success" style="font-size: 3rem;"></i>
+                            <div class="summary-value summary-success" id="success-count">0</div>
+                            <div>Berhasil Diaktifkan</div>
+                        </div>
+                        
+                        <div class="summary-card">
+                            <i class="fas fa-times-circle summary-error" style="font-size: 3rem;"></i>
+                            <div class="summary-value summary-error" id="error-count">0</div>
+                            <div>Gagal Diaktifkan</div>
+                        </div>
+                        
+                        <div class="summary-card">
+                            <i class="fas fa-list summary-total" style="font-size: 3rem;"></i>
+                            <div class="summary-value summary-total" id="total-count">0</div>
+                            <div>Total MCC</div>
+                        </div>
+                    </div>
+                    
+                    <div id="detailed-results">
+                        <!-- Detailed results will be added here -->
+                    </div>
+                </div>
+            </div>
+            
+            <footer>
+                <p>Event Activator for Google Ads MCC &copy; 2023 | Dibuat dengan <i class="fas fa-heart" style="color: #EA4335;"></i> untuk optimasi iklan aplikasi</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Login functionality
+            const loginContainer = document.getElementById('login-container');
+            const mainContent = document.getElementById('main-content');
+            const passwordInput = document.getElementById('password');
+            const loginBtn = document.getElementById('login-btn');
+            const loginError = document.getElementById('login-error');
+            const correctPassword = "xiaogui";
+            
+            loginBtn.addEventListener('click', function() {
+                if (passwordInput.value === correctPassword) {
+                    loginContainer.style.display = 'none';
+                    mainContent.style.display = 'block';
+                } else {
+                    loginError.style.display = 'block';
+                    passwordInput.style.borderColor = 'var(--danger)';
+                    setTimeout(() => {
+                        loginError.style.display = 'none';
+                        passwordInput.style.borderColor = '';
+                    }, 3000);
+                }
+            });
+            
+            // Allow Enter key to submit login
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loginBtn.click();
+                }
+            });
+            
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to current tab and content
+                    tab.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Activate button functionality
+            const activateBtn = document.getElementById('activate-btn');
+            const mccListInput = document.getElementById('mcc-list');
+            const appIdentifierInput = document.getElementById('app-identifier');
+            const identifierTypeSelect = document.getElementById('identifier-type');
+            const progressBar = document.getElementById('progress-bar');
+            const statusContainer = document.getElementById('status-container');
+            const successCount = document.getElementById('success-count');
+            const errorCount = document.getElementById('error-count');
+            const totalCount = document.getElementById('total-count');
+            
+            activateBtn.addEventListener('click', startActivation);
+            
+            function startActivation() {
+                // Validate inputs
+                const mccList = mccListInput.value.trim();
+                const appIdentifier = appIdentifierInput.value.trim();
+                
+                if (!mccList) {
+                    alert('Masukkan daftar MCC IDs terlebih dahulu!');
+                    return;
+                }
+                
+                if (!appIdentifier) {
+                    alert('Masukkan identifikasi aplikasi terlebih dahulu!');
+                    return;
+                }
+                
+                // Parse MCC list
+                const mccIds = parseMccList(mccList);
+                
+                if (mccIds.length === 0) {
+                    alert('Format MCC IDs tidak valid! Pastikan formatnya ###-###-#### dan satu per baris.');
+                    return;
+                }
+                
+                // Switch to progress tab
+                document.querySelector('.tab[data-tab="progress"]').click();
+                
+                // Reset progress and status
+                progressBar.style.width = '0%';
+                statusContainer.innerHTML = '';
+                statusContainer.style.display = 'block';
+                
+                // Reset counters
+                successCount.textContent = '0';
+                errorCount.textContent = '0';
+                totalCount.textContent = mccIds.length;
+                
+                // Simulate activation process
+                simulateActivation(mccIds, appIdentifier);
+            }
+            
+            function parseMccList(mccList) {
+                // Split by newline and clean up
+                return mccList.split('\n')
+                    .map(id => id.trim())
+                    .filter(id => id.length > 0)
+                    .map(id => {
+                        // Validate MCC format (###-###-####)
+                        if (/^\d{3}-\d{3}-\d{4}$/.test(id)) {
+                            return id;
+                        }
+                        return null;
+                    })
+                    .filter(id => id !== null);
+            }
+            
+            function simulateActivation(mccIds, appIdentifier) {
+                let completed = 0;
+                const total = mccIds.length;
+                let successCountValue = 0;
+                let errorCountValue = 0;
+                
+                // Process each MCC
+                mccIds.forEach((mccId, index) => {
+                    setTimeout(() => {
+                        // Add processing status
+                        addStatusItem(mccId, 'processing', 'Memulai proses aktivasi event...');
+                        
+                        // Simulate API call delay
+                        const delay = Math.random() * 1500 + 1000;
+                        
+                        setTimeout(() => {
+                            // Simulate connection to Google Ads API
+                            addStatusItem(mccId, 'processing', 'Menghubungkan ke Google Ads API...');
+                            
+                            setTimeout(() => {
+                                // Simulate event activation
+                                addStatusItem(mccId, 'processing', 'Mengaktifkan event konversi...');
+                                
+                                setTimeout(() => {
+                                    // Randomly determine success (85% success rate for better simulation)
+                                    const isSuccess = Math.random() < 0.85;
+                                    
+                                    if (isSuccess) {
+                                        successCountValue++;
+                                        successCount.textContent = successCountValue;
+                                        addStatusItem(mccId, 'success', `Event berhasil diaktifkan untuk aplikasi ${appIdentifier}`);
+                                        
+                                        // Simulate event confirmation
+                                        setTimeout(() => {
+                                            addStatusItem(mccId, 'success', `Event diterima oleh MCC: ${mccId}`);
+                                        }, 500);
+                                    } else {
+                                        errorCountValue++;
+                                        errorCount.textContent = errorCountValue;
+                                        
+                                        // Different error scenarios
+                                        const errorTypes = [
+                                            'Gagal mengaktifkan event: Koneksi timeout',
+                                            'Gagal mengaktifkan event: Autentikasi gagal',
+                                            'Gagal mengaktifkan event: Aplikasi tidak ditemukan',
+                                            'Gagal mengaktifkan event: Izin tidak cukup'
+                                        ];
+                                        const errorMsg = errorTypes[Math.floor(Math.random() * errorTypes.length)];
+                                        addStatusItem(mccId, 'error', errorMsg);
+                                    }
+                                    
+                                    completed++;
+                                    const progress = (completed / total) * 100;
+                                    progressBar.style.width = `${progress}%`;
+                                    
+                                    // If all completed, show results
+                                    if (completed === total) {
+                                        setTimeout(() => {
+                                            document.querySelector('.tab[data-tab="results"]').click();
+                                            activateBtn.classList.remove('pulse');
+                                            
+                                            // Show completion message
+                                            addStatusItem('Sistem', 'success', 'Proses aktivasi event selesai!');
+                                        }, 1000);
+                                    }
+                                }, 800);
+                            }, 600);
+                        }, delay);
+                    }, index * 500); // Stagger the requests
+                });
+            }
+            
+            function addStatusItem(mccId, type, message) {
+                const statusItem = document.createElement('div');
+                statusItem.className = `status-item status-${type}`;
+                
+                let iconClass, icon;
+                if (type === 'success') {
+                    iconClass = 'success';
+                    icon = 'check-circle';
+                } else if (type === 'error') {
+                    iconClass = 'error';
+                    icon = 'exclamation-circle';
+                } else {
+                    iconClass = 'processing';
+                    icon = 'sync';
+                }
+                
+                statusItem.innerHTML = `
+                    <div class="status-icon ${iconClass}">
+                        <i class="fas fa-${icon} ${type === 'processing' ? 'fa-spin' : ''}"></i>
+                    </div>
+                    <div>
+                        <strong>${mccId}</strong>
+                        <div>${message}</div>
+                        <small style="color: var(--gray);">${new Date().toLocaleTimeString()}</small>
+                    </div>
+                `;
+                
+                statusContainer.appendChild(statusItem);
+                statusContainer.scrollTop = statusContainer.scrollHeight;
+            }
+            
+            // Sample data for demonstration
+            document.getElementById('mcc-list').value = '123-456-7890\n234-567-8901\n345-678-9012\n456-789-0123\n567-890-1234';
+            document.getElementById('app-identifier').value = 'com.EightCubes';
+        });
+    </script>
+</body>
+</html>
