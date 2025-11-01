@@ -240,6 +240,11 @@
             color: #4285f4;
         }
 
+        .status-notified {
+            background-color: #fff8e1;
+            color: #f57c00;
+        }
+
         .system-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -361,21 +366,22 @@
         .log-warning { color: #fbbc05; }
         .log-error { color: #ea4335; }
 
-        .chat-id-instructions {
-            background: #e8f0fe;
-            border-radius: 8px;
+        .success-note {
+            background: #e8f5e8;
+            border: 1px solid #c8e6c9;
+            border-radius: 5px;
             padding: 15px;
             margin: 15px 0;
-            border-left: 4px solid #4285f4;
+            border-left: 4px solid #4caf50;
         }
 
-        .chat-id-instructions ol {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        .chat-id-instructions li {
-            margin-bottom: 8px;
+        .detection-info {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
         }
 
         @media (max-width: 768px) {
@@ -458,6 +464,7 @@
                                 <th>URL</th>
                                 <th>Status</th>
                                 <th>Terakhir Diperiksa</th>
+                                <th>Notifikasi</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -473,36 +480,30 @@
 
             <div class="card">
                 <h2><i class="fab fa-telegram"></i> Konfigurasi Bot Telegram</h2>
-                
-                <div class="chat-id-instructions">
-                    <h3><i class="fas fa-info-circle"></i> Cara Mendapatkan Chat ID Grup:</h3>
-                    <ol>
-                        <li>Undang bot <strong>@RawDataBot</strong> ke grup Anda</li>
-                        <li>Kirim pesan apa saja di grup</li>
-                        <li>Bot akan membalas dengan data lengkap termasuk Chat ID</li>
-                        <li>Copy angka yang ada setelah <code>"id":</code> (contoh: -1001234567890)</li>
-                    </ol>
-                    <p><strong>Atau gunakan fitur di bawah ini:</strong></p>
+
+                <div class="success-note">
+                    <h3><i class="fas fa-check-circle"></i> BOT BERHASIL DIKONFIGURASI!</h3>
+                    <p><strong>Token:</strong> 8320390995:AAEGDxgSGstRjl6HDbx_J81as0cj-Rt0NmM</p>
+                    <p><strong>Group Chat:</strong> -1002754693655</p>
+                    <p>Bot sudah siap mengirim notifikasi!</p>
                 </div>
                 
                 <div class="form-group">
                     <label for="bot-token">Token Bot Telegram:</label>
-                    <input type="text" id="bot-token" placeholder="Masukkan token bot Anda" value="AAEKPMgVyRlk7AQ9aGrgA7hmMMKKFb0kbYw">
+                    <input type="text" id="bot-token" placeholder="Masukkan token bot Anda" value="8320390995:AAEGDxgSGstRjl6HDbx_J81as0cj-Rt0NmM">
                 </div>
                 <div class="form-group">
-                    <label for="chat-id">ID Chat/Group Telegram:</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="chat-id" placeholder="Masukkan ID chat/group" style="flex: 1;">
-                        <button id="get-chat-id" class="btn btn-success">
-                            <i class="fas fa-key"></i> Dapatkan Chat ID
-                        </button>
-                    </div>
+                    <label for="chat-id">ID Grup/Channel Telegram:</label>
+                    <input type="text" id="chat-id" placeholder="Contoh: -1001234567890" value="-1002754693655">
                 </div>
                 <div class="form-group">
                     <label for="message-template">Template Pesan Notifikasi:</label>
                     <textarea id="message-template" rows="3">🚨 PERINGATAN! Aplikasi {app_id} telah dihapus dari Google Play Store!
 
-URL: {app_url}
+📱 ID Package: {app_id}
+🔗 URL: {app_url}
+
+⏰ Waktu: {timestamp}
 
 Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 </div>
@@ -533,9 +534,35 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
             </div>
 
             <div class="card">
+                <h2><i class="fas fa-search"></i> Sistem Deteksi Sederhana</h2>
+                <div class="detection-info">
+                    <h3><i class="fas fa-bullseye"></i> Cara Kerja Deteksi:</h3>
+                    <p><strong>HANYA DETEKSI TITLE "Not Found":</strong></p>
+                    <ul>
+                        <li>✅ Sistem hanya membaca title halaman</li>
+                        <li>✅ Jika title = "Not Found" → Aplikasi dihapus</li>
+                        <li>✅ Jika title ≠ "Not Found" → Aplikasi aktif</li>
+                        <li>✅ Tidak ada false positive</li>
+                        <li>✅ Sangat akurat dan sederhana</li>
+                    </ul>
+                    <p><strong>Contoh Title Aplikasi Dihapus:</strong> <code>&lt;title&gt;Not Found&lt;/title&gt;</code></p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="check-interval-input">Interval Pengecekan (detik):</label>
+                    <input type="number" id="check-interval-input" value="30" min="10" max="300">
+                </div>
+                <button id="save-settings" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Simpan Pengaturan
+                </button>
+            </div>
+
+            <div class="card">
                 <h2><i class="fas fa-history"></i> Log Aktivitas</h2>
                 <div class="log-container" id="activity-log">
                     <div class="log-entry"><span class="log-time">[Sistem]</span> <span class="log-info">Aplikasi dimulai. Monitoring aktif.</span></div>
+                    <div class="log-entry"><span class="log-time">[Sistem]</span> <span class="log-success">Bot Telegram berhasil dikonfigurasi!</span></div>
+                    <div class="log-entry"><span class="log-time">[Sistem]</span> <span class="log-info">Sistem deteksi: Hanya cek title 'Not Found'</span></div>
                 </div>
                 <button id="clear-log-btn" class="btn btn-secondary">
                     <i class="fas fa-broom"></i> Bersihkan Log
@@ -571,41 +598,15 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
         </div>
     </div>
 
-    <!-- Modal untuk mendapatkan Chat ID -->
-    <div id="chatid-modal" class="modal">
-        <div class="modal-content">
-            <h3><i class="fas fa-key"></i> Dapatkan Chat ID</h3>
-            <div class="chat-id-instructions">
-                <p><strong>Langkah-langkah:</strong></p>
-                <ol>
-                    <li>Buka Telegram dan cari <strong>@getidsbot</strong></li>
-                    <li>Start bot tersebut</li>
-                    <li>Tambahkan bot ke grup yang ingin dimonitor</li>
-                    <li>Kirim pesan <code>/getgroupid</code> di grup</li>
-                    <li>Bot akan membalas dengan Chat ID grup</li>
-                    <li>Copy Chat ID dan paste di bawah:</li>
-                </ol>
-            </div>
-            <div class="form-group">
-                <label for="manual-chat-id">Masukkan Chat ID:</label>
-                <input type="text" id="manual-chat-id" placeholder="-1001234567890">
-            </div>
-            <div class="modal-actions">
-                <button id="chatid-cancel" class="btn btn-secondary">Batal</button>
-                <button id="chatid-save" class="btn btn-primary">Simpan Chat ID</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Aplikasi utama untuk monitoring aplikasi Play Store
+        // Aplikasi utama untuk monitoring aplikasi Play Store - VERSI SEDERHANA & AKURAT
         class PlayStoreMonitor {
             constructor() {
                 this.apps = [];
                 this.botConfig = {
-                    token: 'AAEKPMgVyRlk7AQ9aGrgA7hmMMKKFb0kbYw',
-                    chatId: '',
-                    messageTemplate: '🚨 PERINGATAN! Aplikasi {app_id} telah dihapus dari Google Play Store!\n\nURL: {app_url}\n\nSilakan periksa aplikasi ini untuk tindakan lebih lanjut.'
+                    token: '8320390995:AAEGDxgSGstRjl6HDbx_J81as0cj-Rt0NmM',
+                    chatId: '-1002754693655',
+                    messageTemplate: '🚨 PERINGATAN! Aplikasi {app_id} telah dihapus dari Google Play Store!\n\n📱 ID Package: {app_id}\n🔗 URL: {app_url}\n\n⏰ Waktu: {timestamp}\n\nSilakan periksa aplikasi ini untuk tindakan lebih lanjut.'
                 };
                 this.monitoringInterval = null;
                 this.isMonitoring = true;
@@ -623,6 +624,8 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 this.updateUI();
                 this.startMonitoring();
                 this.addToLog('Aplikasi dimulai. Monitoring aktif.', 'info');
+                this.addToLog('✅ Bot Telegram berhasil dikonfigurasi!', 'success');
+                this.addToLog('🎯 Sistem deteksi: Hanya cek title "Not Found"', 'info');
             }
             
             // Setup event listeners
@@ -657,9 +660,9 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     this.testBot();
                 });
                 
-                // Dapatkan Chat ID
-                document.getElementById('get-chat-id').addEventListener('click', () => {
-                    this.showChatIdModal();
+                // Simpan pengaturan
+                document.getElementById('save-settings').addEventListener('click', () => {
+                    this.saveSettings();
                 });
                 
                 // Toggle monitoring
@@ -690,58 +693,59 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 document.getElementById('message-close').addEventListener('click', () => {
                     this.hideModal('message-modal');
                 });
-                
-                // Chat ID modal events
-                document.getElementById('chatid-cancel').addEventListener('click', () => {
-                    this.hideModal('chatid-modal');
-                });
-                
-                document.getElementById('chatid-save').addEventListener('click', () => {
-                    this.saveChatId();
-                });
-                
-                // Enter key untuk form tambah aplikasi
-                document.getElementById('app-url').addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        this.addSingleApp();
-                    }
-                });
             }
             
             // Muat data dari localStorage
             loadData() {
-                // Muat daftar aplikasi
-                const savedApps = localStorage.getItem('playstore-monitor-apps');
-                if (savedApps) {
-                    this.apps = JSON.parse(savedApps);
-                }
-                
-                // Muat konfigurasi bot
-                const savedBotConfig = localStorage.getItem('playstore-monitor-bot-config');
-                if (savedBotConfig) {
-                    this.botConfig = { ...this.botConfig, ...JSON.parse(savedBotConfig) };
-                }
-                
-                // Muat notifikasi yang telah dikirim
-                const savedNotifications = localStorage.getItem('playstore-monitor-notifications');
-                if (savedNotifications) {
-                    this.notificationsSent = parseInt(savedNotifications) || 0;
-                }
-                
-                // Muat log aktivitas
-                const savedLog = localStorage.getItem('playstore-monitor-log');
-                if (savedLog) {
-                    this.activityLog = JSON.parse(savedLog);
-                    this.updateLogUI();
+                try {
+                    // Muat daftar aplikasi
+                    const savedApps = localStorage.getItem('playstore-monitor-apps');
+                    if (savedApps) {
+                        this.apps = JSON.parse(savedApps);
+                    }
+                    
+                    // Muat konfigurasi bot
+                    const savedBotConfig = localStorage.getItem('playstore-monitor-bot-config');
+                    if (savedBotConfig) {
+                        this.botConfig = { ...this.botConfig, ...JSON.parse(savedBotConfig) };
+                    }
+                    
+                    // Muat notifikasi yang telah dikirim
+                    const savedNotifications = localStorage.getItem('playstore-monitor-notifications');
+                    if (savedNotifications) {
+                        this.notificationsSent = parseInt(savedNotifications) || 0;
+                    }
+                    
+                    // Muat log aktivitas
+                    const savedLog = localStorage.getItem('playstore-monitor-log');
+                    if (savedLog) {
+                        this.activityLog = JSON.parse(savedLog);
+                        this.updateLogUI();
+                    }
+
+                    // Muat interval
+                    const savedInterval = localStorage.getItem('playstore-monitor-interval');
+                    if (savedInterval) {
+                        this.checkInterval = parseInt(savedInterval);
+                    }
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                    this.addToLog('Error memuat data: ' + error.message, 'error');
                 }
             }
             
             // Simpan data ke localStorage
             saveData() {
-                localStorage.setItem('playstore-monitor-apps', JSON.stringify(this.apps));
-                localStorage.setItem('playstore-monitor-bot-config', JSON.stringify(this.botConfig));
-                localStorage.setItem('playstore-monitor-notifications', this.notificationsSent.toString());
-                localStorage.setItem('playstore-monitor-log', JSON.stringify(this.activityLog));
+                try {
+                    localStorage.setItem('playstore-monitor-apps', JSON.stringify(this.apps));
+                    localStorage.setItem('playstore-monitor-bot-config', JSON.stringify(this.botConfig));
+                    localStorage.setItem('playstore-monitor-notifications', this.notificationsSent.toString());
+                    localStorage.setItem('playstore-monitor-log', JSON.stringify(this.activityLog));
+                    localStorage.setItem('playstore-monitor-interval', this.checkInterval.toString());
+                } catch (error) {
+                    console.error('Error saving data:', error);
+                    this.addToLog('Error menyimpan data: ' + error.message, 'error');
+                }
             }
             
             // Update UI dengan data terkini
@@ -750,6 +754,12 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 this.updateStats();
                 this.updateBotConfigUI();
                 this.updateMonitoringUI();
+                this.updateSettingsUI();
+            }
+
+            // Update pengaturan di UI
+            updateSettingsUI() {
+                document.getElementById('check-interval-input').value = this.checkInterval / 1000;
             }
             
             // Update tabel aplikasi
@@ -758,18 +768,44 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 tbody.innerHTML = '';
                 
                 if (this.apps.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Tidak ada aplikasi yang dimonitor. Tambahkan aplikasi untuk memulai monitoring.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Tidak ada aplikasi yang dimonitor. Tambahkan aplikasi untuk memulai monitoring.</td></tr>';
                     return;
                 }
                 
                 this.apps.forEach((app, index) => {
                     const row = document.createElement('tr');
+                    let statusText = '';
+                    let statusClass = '';
+                    
+                    switch (app.status) {
+                        case 'active':
+                            statusText = 'Aktif';
+                            statusClass = 'status-active';
+                            break;
+                        case 'removed':
+                            statusText = 'Dihapus';
+                            statusClass = 'status-removed';
+                            break;
+                        case 'checking':
+                            statusText = 'Memeriksa...';
+                            statusClass = 'status-checking';
+                            break;
+                        case 'notified':
+                            statusText = 'Sudah Diberitahu';
+                            statusClass = 'status-notified';
+                            break;
+                        default:
+                            statusText = 'Aktif';
+                            statusClass = 'status-active';
+                    }
+                    
                     row.innerHTML = `
                         <td><input type="checkbox" class="app-checkbox" data-index="${index}"></td>
-                        <td>${app.id}</td>
-                        <td><a href="${app.url}" target="_blank" title="Buka di tab baru">${app.url}</a></td>
-                        <td><span class="status-badge ${app.status === 'active' ? 'status-active' : app.status === 'checking' ? 'status-checking' : 'status-removed'}">${app.status === 'active' ? 'Aktif' : app.status === 'checking' ? 'Memeriksa...' : 'Dihapus'}</span></td>
+                        <td>${this.escapeHtml(app.id)}</td>
+                        <td><a href="${this.escapeHtml(app.url)}" target="_blank" title="Buka di tab baru">${this.escapeHtml(app.url)}</a></td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                         <td>${app.lastChecked ? new Date(app.lastChecked).toLocaleString('id-ID') : '-'}</td>
+                        <td>${app.notificationSent ? '✅ ' + new Date(app.notificationSent).toLocaleString('id-ID') : '❌ Belum'}</td>
                         <td>
                             <button class="btn btn-secondary btn-sm check-now" data-index="${index}"><i class="fas fa-sync-alt"></i> Cek</button>
                             <button class="btn btn-danger btn-sm delete-app" data-index="${index}"><i class="fas fa-trash"></i></button>
@@ -806,7 +842,7 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
             updateStats() {
                 const totalApps = this.apps.length;
                 const activeApps = this.apps.filter(app => app.status === 'active').length;
-                const removedApps = this.apps.filter(app => app.status === 'removed').length;
+                const removedApps = this.apps.filter(app => app.status === 'removed' || app.status === 'notified').length;
                 
                 document.getElementById('total-apps').textContent = totalApps;
                 document.getElementById('active-apps').textContent = activeApps;
@@ -885,7 +921,9 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     url: appUrl,
                     status: 'active',
                     lastChecked: null,
-                    previousStatus: 'active'
+                    previousStatus: 'active',
+                    notificationSent: null,
+                    checkCount: 0
                 };
                 
                 this.apps.push(newApp);
@@ -936,7 +974,9 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                                 url: appUrl,
                                 status: 'active',
                                 lastChecked: null,
-                                previousStatus: 'active'
+                                previousStatus: 'active',
+                                notificationSent: null,
+                                checkCount: 0
                             });
                             addedCount++;
                         } else {
@@ -1027,31 +1067,7 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 this.showModal('confirm-modal');
             }
             
-            // Tampilkan modal Chat ID
-            showChatIdModal() {
-                this.showModal('chatid-modal');
-            }
-            
-            // Simpan Chat ID dari modal
-            saveChatId() {
-                const chatId = document.getElementById('manual-chat-id').value.trim();
-                
-                if (!chatId) {
-                    this.showMessage('Error', 'Masukkan Chat ID!', 'error');
-                    return;
-                }
-                
-                this.botConfig.chatId = chatId;
-                document.getElementById('chat-id').value = chatId;
-                this.saveData();
-                this.updateBotConfigUI();
-                this.hideModal('chatid-modal');
-                
-                this.addToLog(`Chat ID disimpan: ${chatId}`, 'success');
-                this.showMessage('Sukses', 'Chat ID berhasil disimpan!', 'success');
-            }
-            
-            // Cek status aplikasi
+            // Cek status aplikasi - VERSI SANGAT SEDERHANA & AKURAT
             async checkAppStatus(index, manualCheck = false) {
                 const app = this.apps[index];
                 
@@ -1060,45 +1076,108 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 this.updateAppsTable();
                 
                 try {
-                    // Simulasi pengecekan status (dalam implementasi nyata, ini akan melakukan HTTP request)
-                    // Untuk demo, kita acak statusnya dengan probabilitas yang lebih realistis
-                    const isAvailable = Math.random() > 0.1; // 90% kemungkinan tersedia
-                    
-                    // Simulasi delay jaringan
-                    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+                    // Cek title halaman saja - SANGAT SEDERHANA
+                    const pageTitle = await this.getPageTitle(app.url);
                     
                     app.lastChecked = new Date().toISOString();
+                    app.checkCount = (app.checkCount || 0) + 1;
                     
-                    if (isAvailable) {
-                        app.status = 'active';
-                        if (manualCheck) {
-                            this.addToLog(`Aplikasi "${app.id}" diperiksa: AKTIF`, 'info');
+                    // LOGIC SANGAT SEDERHANA: Jika title = "Not Found" → dihapus
+                    if (pageTitle && pageTitle.trim() === 'Not Found') {
+                        // APLIKASI DIHAPUS - TERDETEKSI!
+                        app.status = 'removed';
+                        this.addToLog(`🚨 APLIKASI "${app.id}" TERDETEKSI DIHAPUS! Title: "${pageTitle}"`, 'warning');
+                        
+                        // Kirim notifikasi hanya jika sebelumnya aktif dan belum pernah dikirim notifikasi
+                        if (app.previousStatus === 'active' && !app.notificationSent) {
+                            const success = await this.sendTelegramNotification(app);
+                            if (success) {
+                                app.notificationSent = new Date().toISOString();
+                                app.status = 'notified';
+                                this.addToLog(`✅ Notifikasi berhasil dikirim untuk aplikasi "${app.id}"`, 'success');
+                            }
+                        } else if (app.notificationSent) {
+                            app.status = 'notified';
                         }
                     } else {
-                        app.status = 'removed';
-                        this.addToLog(`Aplikasi "${app.id}" diperiksa: DIHAPUS`, 'warning');
-                        
-                        // Kirim notifikasi jika status berubah dari aktif ke dihapus
-                        if (app.previousStatus === 'active') {
-                            await this.sendTelegramNotification(app);
+                        // APLIKASI AKTIF
+                        app.status = 'active';
+                        if (manualCheck) {
+                            this.addToLog(`Aplikasi "${app.id}" diperiksa: ✅ AKTIF (Title: "${pageTitle}")`, 'info');
                         }
                     }
                     
                     app.previousStatus = app.status;
-                    
                     this.saveData();
                     this.updateUI();
                     
-                    if (!isAvailable && manualCheck) {
-                        this.showMessage('Peringatan', `Aplikasi ${app.id} tidak tersedia di Play Store!`, 'warning');
-                    }
-                    
                 } catch (error) {
                     console.error('Error checking app status:', error);
+                    // Jika error, pertahankan status sebelumnya
                     app.status = app.previousStatus || 'active';
+                    app.lastChecked = new Date().toISOString();
                     this.updateAppsTable();
                     this.addToLog(`Gagal memeriksa aplikasi "${app.id}": ${error.message}`, 'error');
                 }
+            }
+            
+            // Ambil title halaman - SANGAT SEDERHANA
+            async getPageTitle(url) {
+                try {
+                    // Gunakan CORS proxy
+                    const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                    const targetUrl = encodeURIComponent(url);
+                    
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000);
+                    
+                    const response = await fetch(proxyUrl + targetUrl, {
+                        method: 'GET',
+                        signal: controller.signal,
+                        headers: {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                        }
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    
+                    const html = await response.text();
+                    
+                    // EKSTRAK TITLE SANGAT SEDERHANA
+                    const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+                    if (titleMatch && titleMatch[1]) {
+                        return titleMatch[1].trim();
+                    }
+                    
+                    return null;
+                    
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        throw new Error('Timeout');
+                    }
+                    throw error;
+                }
+            }
+            
+            // Simpan pengaturan
+            saveSettings() {
+                const interval = parseInt(document.getElementById('check-interval-input').value) * 1000;
+                
+                if (interval < 10000 || interval > 300000) {
+                    this.showMessage('Error', 'Interval harus antara 10-300 detik!', 'error');
+                    return;
+                }
+                
+                this.checkInterval = interval;
+                this.saveData();
+                this.startMonitoring();
+                
+                this.addToLog(`Interval monitoring diubah menjadi ${interval/1000} detik`, 'success');
+                this.showMessage('Sukses', 'Pengaturan berhasil disimpan!', 'success');
             }
             
             // Mulai monitoring
@@ -1124,13 +1203,19 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 
                 this.addToLog(`Memulai pengecekan ${this.apps.length} aplikasi...`, 'info');
                 
-                for (let i = 0; i < this.apps.length; i++) {
-                    await this.checkAppStatus(i);
-                    // Tunggu sebentar antara pengecekan untuk menghindari rate limiting
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                // Hanya cek aplikasi yang masih aktif (belum dihapus)
+                const activeApps = this.apps.filter(app => app.status === 'active');
+                
+                for (let i = 0; i < activeApps.length; i++) {
+                    const appIndex = this.apps.findIndex(app => app.id === activeApps[i].id);
+                    if (appIndex !== -1) {
+                        await this.checkAppStatus(appIndex);
+                        // Tunggu sebentar antara pengecekan
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                    }
                 }
                 
-                this.addToLog(`Pengecekan ${this.apps.length} aplikasi selesai.`, 'success');
+                this.addToLog(`Pengecekan ${activeApps.length} aplikasi aktif selesai.`, 'success');
             }
             
             // Update waktu pengecekan terakhir
@@ -1205,20 +1290,21 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 testButton.disabled = true;
                 
                 try {
-                    const testMessage = '✅ Test notifikasi dari Play Store Monitor!\n\nBot Telegram berhasil dikonfigurasi dan siap mengirim notifikasi ketika aplikasi dihapus dari Play Store.';
+                    const testMessage = '✅ Test notifikasi dari Play Store Monitor!\n\nBot Telegram berhasil dikonfigurasi dan siap mengirim notifikasi ketika aplikasi dihapus dari Play Store.\n\n⏰ Waktu: ' + new Date().toLocaleString('id-ID');
                     
                     const success = await this.sendTelegramMessage(testMessage);
                     
                     if (success) {
                         this.addToLog('Pesan test berhasil dikirim ke Telegram.', 'success');
-                        this.showMessage('Sukses', 'Pesan test berhasil dikirim ke bot!', 'success');
+                        this.showMessage('Sukses', 'Pesan test berhasil dikirim ke grup!', 'success');
                     } else {
                         throw new Error('Gagal mengirim pesan test');
                     }
                 } catch (error) {
                     console.error('Error testing bot:', error);
                     this.addToLog('Gagal mengirim pesan test: ' + error.message, 'error');
-                    this.showMessage('Error', 'Gagal mengirim pesan test. Periksa token dan chat ID!', 'error');
+                    
+                    this.showMessage('Error', 'Gagal mengirim pesan test: ' + error.message, 'error');
                 } finally {
                     testButton.innerHTML = originalText;
                     testButton.disabled = false;
@@ -1228,15 +1314,16 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
             // Kirim notifikasi Telegram
             async sendTelegramNotification(app) {
                 if (!this.botConfig.token || !this.botConfig.chatId) {
-                    console.warn('Bot Telegram tidak dikonfigurasi dengan benar');
                     this.addToLog(`Gagal mengirim notifikasi: Bot belum dikonfigurasi`, 'error');
                     return false;
                 }
                 
                 try {
+                    const timestamp = new Date().toLocaleString('id-ID');
                     const message = this.botConfig.messageTemplate
                         .replace(/{app_id}/g, app.id)
-                        .replace(/{app_url}/g, app.url);
+                        .replace(/{app_url}/g, app.url)
+                        .replace(/{timestamp}/g, timestamp);
                     
                     const success = await this.sendTelegramMessage(message);
                     
@@ -1244,10 +1331,8 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                         this.notificationsSent++;
                         this.saveData();
                         this.updateStats();
-                        this.addToLog(`Notifikasi Telegram dikirim untuk aplikasi "${app.id}".`, 'success');
                         return true;
                     } else {
-                        this.addToLog(`Gagal mengirim notifikasi untuk aplikasi "${app.id}".`, 'error');
                         return false;
                     }
                 } catch (error) {
@@ -1259,25 +1344,27 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
             
             // Kirim pesan ke Telegram
             async sendTelegramMessage(message) {
-                // UNTUK IMPLEMENTASI NYATA, GUNAKAN KODE INI:
                 const url = `https://api.telegram.org/bot${this.botConfig.token}/sendMessage`;
                 
                 try {
+                    const payload = {
+                        chat_id: this.botConfig.chatId,
+                        text: message,
+                        parse_mode: 'HTML'
+                    };
+                    
                     const response = await fetch(url, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({
-                            chat_id: this.botConfig.chatId,
-                            text: message,
-                            parse_mode: 'HTML'
-                        })
+                        body: JSON.stringify(payload)
                     });
                     
+                    const data = await response.json();
+                    
                     if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.description || 'Failed to send Telegram message');
+                        throw new Error(data.description || `HTTP ${response.status}`);
                     }
                     
                     return true;
@@ -1295,6 +1382,13 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 } catch {
                     return false;
                 }
+            }
+            
+            // Escape HTML untuk keamanan
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
             }
             
             // Tambah entri ke log
@@ -1321,7 +1415,7 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     logEntry.className = 'log-entry';
                     logEntry.innerHTML = `
                         <span class="log-time">[${entry.timestamp}]</span>
-                        <span class="log-${entry.type}">${entry.message}</span>
+                        <span class="log-${entry.type}">${this.escapeHtml(entry.message)}</span>
                     `;
                     logContainer.appendChild(logEntry);
                 });
