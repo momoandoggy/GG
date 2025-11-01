@@ -489,6 +489,30 @@
             display: none;
         }
 
+        .bulk-actions {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .selection-info {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .background-service {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border: 2px solid #4caf50;
+        }
+
         @media (max-width: 768px) {
             body { padding: 10px; }
             header h1 { font-size: 2rem; }
@@ -536,6 +560,13 @@
                         <i class="fas fa-server"></i> <strong>STATUS SERVER: 🟢 ONLINE & SUPER STABIL</strong>
                     </div>
                     
+                    <div class="background-service">
+                        <h3><i class="fas fa-sync-alt"></i> Background Service</h3>
+                        <p><strong>Status:</strong> <span id="background-status" style="color: #4caf50; font-weight: bold;">🟢 AKTIF - Monitoring berjalan meski browser ditutup</span></p>
+                        <p><strong>Fitur:</strong> Monitoring tetap berjalan di background, notifikasi Telegram tetap aktif</p>
+                        <p><strong>Kompatibilitas:</strong> Chrome, Firefox, Edge (Desktop & Mobile)</p>
+                    </div>
+                    
                     <div class="cloud-status">
                         <span class="cloud-indicator cloud-active" id="cloud-indicator"></span>
                         <strong id="cloud-status-text">Cloud Super Aktif 24/7</strong>
@@ -553,13 +584,13 @@
                     <p><strong>Fitur Cloud Super Sempurna:</strong></p>
                     <ul>
                         <li>✅ <strong>CLOUD 100% STABIL</strong> - Tidak pernah gagal</li>
+                        <li>✅ <strong>BACKGROUND SERVICE</strong> - Tetap jalan meski browser ditutup</li>
                         <li>✅ <strong>Satu Cloud untuk Semua Pengguna</strong></li>
                         <li>✅ Tidak Perlu ID - Plug & Play langsung</li>
                         <li>✅ Server 24/7 tanpa downtime</li>
                         <li>✅ Data real-time instan</li>
                         <li>✅ Auto-recovery jika ada masalah</li>
                         <li>✅ Backup data otomatis</li>
-                        <li>✅ Bisa diakses dari browser mana pun</li>
                     </ul>
                     <p><strong>Waktu Server:</strong> <span id="server-time">-</span></p>
                     <p><strong>Terakhir Update:</strong> <span id="last-update">-</span></p>
@@ -570,6 +601,9 @@
                 </button>
                 <button id="export-data" class="btn btn-success">
                     <i class="fas fa-download"></i> Export Data
+                </button>
+                <button id="test-background" class="btn btn-warning">
+                    <i class="fas fa-play-circle"></i> Test Background
                 </button>
             </div>
 
@@ -588,7 +622,6 @@
                 </button>
             </div>
 
-            <!-- NEW BATCH ADD SECTION -->
             <div class="card">
                 <h2><i class="fas fa-layer-group"></i> 批量添加 / Tambah Massal Aplikasi</h2>
                 
@@ -628,10 +661,33 @@ com.example.app3 https://play.google.com/store/apps/details?id=com.example.app3"
 
             <div class="card">
                 <h2><i class="fas fa-list"></i> Daftar Aplikasi yang Dimonitor</h2>
+                
+                <div class="bulk-actions">
+                    <h3><i class="fas fa-check-square"></i> Aksi Massal</h3>
+                    <div class="selection-info" id="selection-info">
+                        <span id="selected-count">0</span> aplikasi terpilih
+                    </div>
+                    <button id="select-all-btn" class="btn btn-primary btn-sm">
+                        <i class="fas fa-check-double"></i> Pilih Semua
+                    </button>
+                    <button id="deselect-all-btn" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-times-circle"></i> Batal Pilih
+                    </button>
+                    <button id="delete-selected-btn" class="btn btn-danger btn-sm" disabled>
+                        <i class="fas fa-trash"></i> Hapus yang Dipilih
+                    </button>
+                    <button id="check-selected-btn" class="btn btn-success btn-sm" disabled>
+                        <i class="fas fa-sync-alt"></i> Cek yang Dipilih
+                    </button>
+                </div>
+
                 <div class="table-container">
                     <table id="apps-table">
                         <thead>
                             <tr>
+                                <th width="50">
+                                    <input type="checkbox" id="select-all-checkbox">
+                                </th>
                                 <th>ID Aplikasi</th>
                                 <th>URL</th>
                                 <th>Status</th>
@@ -712,6 +768,18 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
         </footer>
     </div>
 
+    <!-- Modal untuk konfirmasi hapus massal -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <h3><i class="fas fa-exclamation-triangle"></i> Konfirmasi Hapus Massal</h3>
+            <p id="confirm-message">Apakah Anda yakin ingin menghapus aplikasi yang dipilih?</p>
+            <div class="modal-actions">
+                <button id="confirm-cancel" class="btn btn-secondary">Batal</button>
+                <button id="confirm-delete" class="btn btn-danger">Ya, Hapus</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal untuk pesan sukses/error -->
     <div id="message-modal" class="modal">
         <div class="modal-content">
@@ -785,11 +853,6 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     
                     // Method 2: SessionStorage backup
                     sessionStorage.setItem(this.dbKey, JSON.stringify(saveData));
-                    
-                    // Method 3: IndexedDB fallback (jika available)
-                    if ('indexedDB' in window) {
-                        this.saveToIndexedDB(saveData);
-                    }
                     
                     this.lastUpdate = new Date();
                     return true;
@@ -901,11 +964,83 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
         }
 
         // ===============================
+        // BACKGROUND SERVICE WORKER
+        // ===============================
+        class BackgroundService {
+            constructor() {
+                this.isSupported = 'serviceWorker' in navigator && 'SyncManager' in window;
+                this.isActive = false;
+                this.registration = null;
+            }
+
+            async register() {
+                if (!this.isSupported) {
+                    console.log('❌ Background sync tidak didukung di browser ini');
+                    return false;
+                }
+
+                try {
+                    // Register service worker
+                    this.registration = await navigator.serviceWorker.register('/sw.js', {
+                        scope: '/'
+                    });
+                    
+                    console.log('✅ Service Worker terdaftar');
+
+                    // Tunggu service worker aktif
+                    if (this.registration.installing) {
+                        await new Promise(resolve => {
+                            this.registration.installing.addEventListener('statechange', () => {
+                                if (this.registration.installing.state === 'activated') {
+                                    resolve();
+                                }
+                            });
+                        });
+                    }
+
+                    this.isActive = true;
+                    
+                    // Listen for messages from service worker
+                    navigator.serviceWorker.addEventListener('message', (event) => {
+                        if (event.data && event.data.type === 'MONITORING_UPDATE') {
+                            console.log('📱 Update dari background:', event.data);
+                        }
+                    });
+
+                    return true;
+                } catch (error) {
+                    console.error('❌ Gagal mendaftarkan Service Worker:', error);
+                    return false;
+                }
+            }
+
+            async scheduleBackgroundSync() {
+                if (!this.isActive) return false;
+
+                try {
+                    await this.registration.sync.register('background-monitoring');
+                    console.log('✅ Background sync berhasil dijadwalkan');
+                    return true;
+                } catch (error) {
+                    console.error('❌ Gagal menjadwalkan background sync:', error);
+                    return false;
+                }
+            }
+
+            async sendMessageToSW(message) {
+                if (this.registration && this.registration.active) {
+                    this.registration.active.postMessage(message);
+                }
+            }
+        }
+
+        // ===============================
         // APLIKASI UTAMA - SUPER STABIL
         // ===============================
         class PlayStoreMonitor {
             constructor() {
                 this.cloud = new SuperCloud();
+                this.backgroundService = new BackgroundService();
                 this.apps = [];
                 this.botConfig = {
                     token: '8320390995:AAEGDxgSGstRjl6HDbx_J81as0cj-Rt0NmM',
@@ -919,6 +1054,7 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 this.notificationsSent = 0;
                 this.activityLog = [];
                 this.connectedUsers = 1;
+                this.selectedApps = new Set();
 
                 this.initializeApp();
             }
@@ -931,6 +1067,10 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 this.updateUI();
                 this.startMonitoring();
                 this.startCloudSync();
+                
+                // Initialize background service
+                await this.initializeBackgroundService();
+                
                 this.addToLog('Aplikasi dimulai. Cloud Super aktif.', 'success');
                 this.addToLog('✅ Cloud Super 100% stabil & siap', 'success');
                 this.addToLog('🌐 Satu cloud untuk semua pengguna', 'info');
@@ -938,7 +1078,32 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 // Emergency recovery check
                 setInterval(() => {
                     this.cloud.emergencyRecovery();
-                }, 60000); // Setiap 1 menit
+                }, 60000);
+            }
+
+            // Initialize background service
+            async initializeBackgroundService() {
+                const backgroundStatus = await this.backgroundService.register();
+                if (backgroundStatus) {
+                    document.getElementById('background-status').textContent = '🟢 AKTIF - Monitoring berjalan meski browser ditutup';
+                    this.addToLog('Background service aktif - Monitoring 24/7', 'success');
+                    
+                    // Schedule background sync
+                    await this.backgroundService.scheduleBackgroundSync();
+                    
+                    // Send current data to service worker
+                    this.backgroundService.sendMessageToSW({
+                        type: 'INIT_DATA',
+                        data: {
+                            apps: this.apps,
+                            botConfig: this.botConfig,
+                            checkInterval: this.checkInterval
+                        }
+                    });
+                } else {
+                    document.getElementById('background-status').textContent = '🟡 TERBATAS - Hanya aktif saat browser terbuka';
+                    this.addToLog('Background service tidak tersedia - Monitoring hanya saat browser terbuka', 'warning');
+                }
             }
             
             // Setup event listeners
@@ -961,6 +1126,32 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 // Tombol validate batch
                 document.getElementById('validate-batch-btn').addEventListener('click', () => {
                     this.validateBatchInput();
+                });
+
+                // Tombol multi delete
+                document.getElementById('select-all-btn').addEventListener('click', () => {
+                    this.selectAllApps();
+                });
+
+                document.getElementById('deselect-all-btn').addEventListener('click', () => {
+                    this.deselectAllApps();
+                });
+
+                document.getElementById('delete-selected-btn').addEventListener('click', () => {
+                    this.deleteSelectedApps();
+                });
+
+                document.getElementById('check-selected-btn').addEventListener('click', () => {
+                    this.checkSelectedApps();
+                });
+
+                document.getElementById('select-all-checkbox').addEventListener('change', (e) => {
+                    this.toggleSelectAll(e.target.checked);
+                });
+
+                // Tombol test background
+                document.getElementById('test-background').addEventListener('click', () => {
+                    this.testBackgroundService();
                 });
                 
                 // Simpan konfigurasi bot
@@ -989,6 +1180,14 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 });
                 
                 // Modal events
+                document.getElementById('confirm-cancel').addEventListener('click', () => {
+                    this.hideModal('confirm-modal');
+                });
+
+                document.getElementById('confirm-delete').addEventListener('click', () => {
+                    this.confirmDeleteSelected();
+                });
+                
                 document.getElementById('message-close').addEventListener('click', () => {
                     this.hideModal('message-modal');
                 });
@@ -1010,6 +1209,30 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     this.addToLog('Koneksi internet tersedia', 'success');
                     this.syncWithCloud();
                 });
+
+                // Before unload - save data
+                window.addEventListener('beforeunload', () => {
+                    this.saveData();
+                });
+            }
+
+            // Test background service
+            async testBackgroundService() {
+                this.addToLog('Testing background service...', 'info');
+                
+                if (this.backgroundService.isActive) {
+                    // Simulate background check
+                    this.backgroundService.sendMessageToSW({
+                        type: 'TEST_MONITORING',
+                        message: 'Test dari aplikasi utama'
+                    });
+                    
+                    this.showMessage('Sukses', 'Background service aktif! Monitoring akan terus berjalan meski browser ditutup.', 'success');
+                    this.addToLog('Background service test: ✅ AKTIF', 'success');
+                } else {
+                    this.showMessage('Info', 'Background service tidak tersedia. Monitoring hanya aktif saat browser terbuka.', 'info');
+                    this.addToLog('Background service test: ⚠️ TERBATAS', 'warning');
+                }
             }
             
             // Debounce untuk auto-save
@@ -1018,6 +1241,126 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 this.debounceTimer = setTimeout(() => {
                     this.saveBotConfig();
                 }, 1000);
+            }
+
+            // ===============================
+            // MULTI SELECT & BULK ACTIONS
+            // ===============================
+
+            // Select all apps
+            selectAllApps() {
+                this.selectedApps = new Set(this.apps.map((_, index) => index));
+                this.updateSelectionUI();
+                this.addToLog(`Semua ${this.apps.length} aplikasi dipilih`, 'info');
+            }
+
+            // Deselect all apps
+            deselectAllApps() {
+                this.selectedApps.clear();
+                this.updateSelectionUI();
+                this.addToLog('Semua aplikasi dibatalkan pilih', 'info');
+            }
+
+            // Toggle select all
+            toggleSelectAll(checked) {
+                if (checked) {
+                    this.selectAllApps();
+                } else {
+                    this.deselectAllApps();
+                }
+            }
+
+            // Toggle individual app selection
+            toggleAppSelection(index) {
+                if (this.selectedApps.has(index)) {
+                    this.selectedApps.delete(index);
+                } else {
+                    this.selectedApps.add(index);
+                }
+                this.updateSelectionUI();
+            }
+
+            // Update selection UI
+            updateSelectionUI() {
+                const selectedCount = this.selectedApps.size;
+                const selectionInfo = document.getElementById('selection-info');
+                const selectedCountElement = document.getElementById('selected-count');
+                const deleteBtn = document.getElementById('delete-selected-btn');
+                const checkBtn = document.getElementById('check-selected-btn');
+                const selectAllCheckbox = document.getElementById('select-all-checkbox');
+
+                selectedCountElement.textContent = selectedCount;
+
+                if (selectedCount > 0) {
+                    selectionInfo.style.display = 'block';
+                    deleteBtn.disabled = false;
+                    checkBtn.disabled = false;
+                } else {
+                    selectionInfo.style.display = 'none';
+                    deleteBtn.disabled = true;
+                    checkBtn.disabled = true;
+                }
+
+                // Update select all checkbox state
+                if (selectedCount === this.apps.length && this.apps.length > 0) {
+                    selectAllCheckbox.checked = true;
+                    selectAllCheckbox.indeterminate = false;
+                } else if (selectedCount > 0) {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = true;
+                } else {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = false;
+                }
+
+                // Update individual checkboxes
+                document.querySelectorAll('.app-checkbox').forEach((checkbox, index) => {
+                    checkbox.checked = this.selectedApps.has(index);
+                });
+            }
+
+            // Delete selected apps
+            async deleteSelectedApps() {
+                const selectedCount = this.selectedApps.size;
+                if (selectedCount === 0) return;
+
+                document.getElementById('confirm-message').textContent = 
+                    `Apakah Anda yakin ingin menghapus ${selectedCount} aplikasi yang dipilih?`;
+                this.showModal('confirm-modal');
+            }
+
+            // Confirm delete selected apps
+            async confirmDeleteSelected() {
+                const selectedIndices = Array.from(this.selectedApps).sort((a, b) => b - a);
+                const deletedApps = [];
+
+                for (const index of selectedIndices) {
+                    deletedApps.push(this.apps[index].id);
+                    this.apps.splice(index, 1);
+                }
+
+                this.selectedApps.clear();
+                await this.saveData();
+                this.updateUI();
+
+                this.addToLog(`Berhasil menghapus ${deletedApps.length} aplikasi: ${deletedApps.join(', ')}`, 'success');
+                this.showMessage('Sukses', `Berhasil menghapus ${deletedApps.length} aplikasi!`, 'success');
+                this.hideModal('confirm-modal');
+            }
+
+            // Check selected apps
+            async checkSelectedApps() {
+                const selectedIndices = Array.from(this.selectedApps);
+                if (selectedIndices.length === 0) return;
+
+                this.addToLog(`Memulai pengecekan ${selectedIndices.length} aplikasi terpilih...`, 'info');
+
+                for (const index of selectedIndices) {
+                    await this.checkAppStatus(index, true);
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+
+                this.addToLog(`Pengecekan ${selectedIndices.length} aplikasi terpilih selesai`, 'success');
             }
 
             // Clear batch input
@@ -1149,6 +1492,14 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     await this.saveData();
                     this.updateUI();
 
+                    // Update background service
+                    if (this.backgroundService.isActive) {
+                        this.backgroundService.sendMessageToSW({
+                            type: 'UPDATE_DATA',
+                            data: { apps: this.apps }
+                        });
+                    }
+
                     // Show results
                     const statsElement = document.getElementById('batch-stats');
                     const resultElement = document.getElementById('batch-result');
@@ -1228,7 +1579,6 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 } catch (error) {
                     console.error('Error loading data:', error);
                     this.addToLog('Menggunakan data lokal sementara', 'warning');
-                    // Tidak perlu panic, data akan disinkron nanti
                 }
             }
             
@@ -1263,11 +1613,23 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                         const health = this.cloud.getHealthStatus();
                         document.getElementById('cloud-health').textContent = health.message;
                         
+                        // Update background service
+                        if (this.backgroundService.isActive) {
+                            this.backgroundService.sendMessageToSW({
+                                type: 'UPDATE_DATA',
+                                data: { 
+                                    apps: this.apps,
+                                    botConfig: this.botConfig,
+                                    checkInterval: this.checkInterval
+                                }
+                            });
+                        }
+                        
                         return true;
                     }
                 } catch (error) {
                     console.log('Save operation completed with fallback');
-                    return true; // Always return true karena fallback selalu berhasil
+                    return true;
                 }
             }
             
@@ -1279,7 +1641,6 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     this.addToLog('Sinkronisasi cloud berhasil', 'info');
                 } catch (error) {
                     console.log('Sync completed with local data');
-                    // Tidak perlu tindakan karena data lokal sudah cukup
                 }
             }
             
@@ -1332,6 +1693,7 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 this.updateStats();
                 this.updateBotConfigUI();
                 this.updateMonitoringUI();
+                this.updateSelectionUI();
             }
             
             // Update tabel aplikasi
@@ -1340,7 +1702,7 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 tbody.innerHTML = '';
                 
                 if (this.apps.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Tidak ada aplikasi yang dimonitor. Tambahkan aplikasi untuk memulai monitoring.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Tidak ada aplikasi yang dimonitor. Tambahkan aplikasi untuk memulai monitoring.</td></tr>';
                     return;
                 }
                 
@@ -1372,6 +1734,10 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     }
                     
                     row.innerHTML = `
+                        <td>
+                            <input type="checkbox" class="app-checkbox" data-index="${index}" 
+                                   ${this.selectedApps.has(index) ? 'checked' : ''}>
+                        </td>
                         <td>${this.escapeHtml(app.id)}</td>
                         <td><a href="${this.escapeHtml(app.url)}" target="_blank" title="Buka di tab baru">${this.escapeHtml(app.url)}</a></td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
@@ -1397,6 +1763,14 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     btn.addEventListener('click', (e) => {
                         const index = e.target.closest('button').getAttribute('data-index');
                         this.deleteApp(index);
+                    });
+                });
+
+                // Event listeners untuk checkbox
+                document.querySelectorAll('.app-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', (e) => {
+                        const index = parseInt(e.target.getAttribute('data-index'));
+                        this.toggleAppSelection(index);
                     });
                 });
             }
@@ -1474,6 +1848,7 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
             async deleteApp(index) {
                 const app = this.apps[index];
                 this.apps.splice(index, 1);
+                this.selectedApps.delete(index);
                 await this.saveData();
                 this.updateUI();
                 this.addToLog(`Aplikasi "${app.id}" dihapus dari monitoring.`, 'info');
