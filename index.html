@@ -3,1058 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCC Event Activator - Enhanced</title>
-    <style>
-        :root {
-            --primary: #4a6cf7;
-            --primary-dark: #3a5ce5;
-            --secondary: #6c757d;
-            --success: #28a745;
-            --danger: #dc3545;
-            --warning: #ffc107;
-            --info: #17a2b8;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --bg-color: #f5f7ff;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --border-radius: 10px;
-            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-        }
-
-        .login-box {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .login-box h2 {
-            margin-bottom: 20px;
-            color: var(--primary);
-        }
-
-        .login-box input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: var(--transition);
-        }
-
-        .login-box input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
-        }
-
-        .login-box button {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .login-box button:hover {
-            background: var(--primary-dark);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            animation: slideDown 0.5s ease;
-        }
-
-        header h1 {
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        header p {
-            color: var(--secondary);
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 25px;
-            margin-bottom: 25px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .card h2 {
-            margin-bottom: 20px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-        }
-
-        .card h2 i {
-            margin-right: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: var(--transition);
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
-        }
-
-        textarea.form-control {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-        }
-
-        .checkbox-item input {
-            margin-right: 8px;
-        }
-
-        .btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn i {
-            margin-right: 8px;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #218838;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #c82333;
-        }
-
-        .btn-warning {
-            background: var(--warning);
-            color: var(--dark);
-        }
-
-        .btn-warning:hover {
-            background: #e0a800;
-        }
-
-        .result-container {
-            margin-top: 30px;
-        }
-
-        .result-box {
-            background: var(--light);
-            border-radius: var(--border-radius);
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--primary);
-            animation: fadeIn 0.5s ease;
-        }
-
-        .result-box.success {
-            border-left-color: var(--success);
-        }
-
-        .result-box.error {
-            border-left-color: var(--danger);
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .result-title {
-            font-weight: 600;
-        }
-
-        .result-status {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-success {
-            background: rgba(40, 167, 69, 0.1);
-            color: var(--success);
-        }
-
-        .status-error {
-            background: rgba(220, 53, 69, 0.1);
-            color: var(--danger);
-        }
-
-        .status-pending {
-            background: rgba(255, 193, 7, 0.1);
-            color: var(--warning);
-        }
-
-        .progress-container {
-            margin-top: 20px;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: #e9ecef;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-
-        .progress {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .progress-text {
-            text-align: center;
-            font-size: 14px;
-            color: var(--secondary);
-        }
-
-        .counter {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .counter button {
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            background: var(--light);
-            color: var(--dark);
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .counter button:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .counter input {
-            width: 80px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 600;
-            border: none;
-            background: transparent;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .pulse {
-            animation: pulse 1.5s infinite;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            color: var(--secondary);
-            font-size: 14px;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 10px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            margin-left: 5px;
-            cursor: help;
-        }
-
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background-color: var(--dark);
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -100px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 12px;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            background: var(--success);
-            color: white;
-            border-radius: 5px;
-            box-shadow: var(--box-shadow);
-            z-index: 1000;
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.error {
-            background: var(--danger);
-        }
-
-        .api-config {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .api-config h3 {
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-
-        .event-sequence {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f0f5ff;
-            border-radius: 5px;
-        }
-
-        .event-sequence h3 {
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-
-        .sequence-list {
-            list-style-type: decimal;
-            padding-left: 20px;
-        }
-
-        .sequence-list li {
-            margin-bottom: 5px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .card {
-                padding: 15px;
-            }
-            
-            .checkbox-group {
-                flex-direction: column;
-            }
-        }
-    </style>
+    <title>Monitor Aplikasi Google Play Store</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-box">
-            <h2>MCC Event Activator - Enhanced</h2>
-            <p>Masukkan sandi untuk melanjutkan</p>
-            <input type="password" id="passwordInput" placeholder="Sandi">
-            <button id="loginBtn">Masuk</button>
+    <div class="container">
+        <header>
+            <h1><i class="fab fa-google-play"></i> Monitor Aplikasi Play Store</h1>
+            <p>Pantau status aplikasi Google Play Store dan dapatkan notifikasi melalui Telegram</p>
+        </header>
+
+        <div class="dashboard">
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>Total Aplikasi</h3>
+                    <span id="total-apps">0</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Aktif</h3>
+                    <span id="active-apps">0</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Dihapus</h3>
+                    <span id="removed-apps">0</span>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- Main Application -->
-    <div id="mainApp" class="hidden">
-        <div class="container">
-            <header>
-                <h1>MCC Event Activator - Enhanced</h1>
-                <p>Sistem pengaktifan event yang lebih realistis untuk MCC dengan format data yang benar</p>
-            </header>
-
+        <div class="main-content">
             <div class="card">
-                <h2><i class="fas fa-cog"></i> Konfigurasi API</h2>
-                
-                <div class="api-config">
-                    <h3>Endpoint API MCC</h3>
-                    <div class="form-group">
-                        <label for="apiEndpoint">URL Endpoint</label>
-                        <input type="text" id="apiEndpoint" class="form-control" value="https://api.mccplatform.com/v1/events" placeholder="Masukkan endpoint API MCC">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="apiKey">API Key</label>
-                        <input type="password" id="apiKey" class="form-control" value="your_api_key_here" placeholder="Masukkan API Key">
-                    </div>
-                </div>
-                
-                <h2><i class="fas fa-sliders-h"></i> Konfigurasi Event</h2>
-                
+                <h2><i class="fas fa-plus-circle"></i> Tambah Aplikasi</h2>
                 <div class="form-group">
-                    <label for="mccList">Daftar MCC (satu per baris)</label>
-                    <textarea id="mccList" class="form-control" placeholder="Masukkan MCC, satu per baris"></textarea>
+                    <label for="app-id">ID Aplikasi (Package Name):</label>
+                    <input type="text" id="app-id" placeholder="Contoh: com.example.app">
                 </div>
-                
                 <div class="form-group">
-                    <label for="appList">Daftar Nama Paket Aplikasi (satu per baris)</label>
-                    <textarea id="appList" class="form-control" placeholder="Contoh: com.EightCubes, com.ExampleApp"></textarea>
+                    <label for="app-url">URL Aplikasi Play Store:</label>
+                    <input type="url" id="app-url" placeholder="https://play.google.com/store/apps/details?id=...">
                 </div>
-                
-                <div class="form-group">
-                    <label>Event yang Diaktifkan</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="eventFirstOpen" checked>
-                            <label for="eventFirstOpen">first_open</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="eventFirstRecharge" checked>
-                            <label for="eventFirstRecharge">firstrecharge</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="eventLogin" checked>
-                            <label for="eventLogin">login</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="eventRecharge" checked>
-                            <label for="eventRecharge">recharge</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="eventRegister" checked>
-                            <label for="eventRegister">register</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Jumlah Pengaktifan per Kombinasi</label>
-                    <div class="counter">
-                        <button id="decreaseCount">-</button>
-                        <input type="text" id="activationCount" value="1" readonly>
-                        <button id="increaseCount">+</button>
-                        <span>kali</span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="delayInput">Delay antar Pengaktifan (ms)</label>
-                    <input type="number" id="delayInput" class="form-control" value="1000" min="100">
-                </div>
-                
-                <div class="event-sequence">
-                    <h3>Urutan Event yang Direkomendasikan</h3>
-                    <ol class="sequence-list">
-                        <li>first_open (harus pertama)</li>
-                        <li>register (setelah first_open)</li>
-                        <li>login (setelah register)</li>
-                        <li>firstrecharge (setelah login)</li>
-                        <li>recharge (bisa berulang)</li>
-                    </ol>
-                    <p><small>Catatan: Urutan ini meningkatkan kemungkinan event diterima oleh MCC</small></p>
-                </div>
-                
-                <button id="activateBtn" class="btn btn-primary">
-                    <i class="fas fa-play"></i> Aktifkan Event
-                </button>
-                <button id="stopBtn" class="btn btn-danger hidden">
-                    <i class="fas fa-stop"></i> Hentikan
-                </button>
-                <button id="testApiBtn" class="btn btn-warning">
-                    <i class="fas fa-vial"></i> Test Koneksi API
+                <button id="add-app-btn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Tambah Aplikasi
                 </button>
             </div>
 
             <div class="card">
-                <h2><i class="fas fa-chart-bar"></i> Hasil Aktivasi</h2>
-                
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress" id="progressBar"></div>
-                    </div>
-                    <div class="progress-text" id="progressText">0% (0/0)</div>
+                <h2><i class="fas fa-layer-group"></i> Tambah Aplikasi Secara Massal</h2>
+                <div class="form-group">
+                    <label for="batch-input">Masukkan data aplikasi (Format: ID|URL, satu per baris):</label>
+                    <textarea id="batch-input" rows="5" placeholder="com.example.app1|https://play.google.com/store/apps/details?id=com.example.app1&#10;com.example.app2|https://play.google.com/store/apps/details?id=com.example.app2"></textarea>
                 </div>
-                
-                <div id="resultContainer" class="result-container">
-                    <!-- Results will be displayed here -->
+                <button id="batch-add-btn" class="btn btn-primary">
+                    <i class="fas fa-layer-group"></i> Tambah Massal
+                </button>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-list"></i> Daftar Aplikasi yang Dimonitor</h2>
+                <div class="table-container">
+                    <table id="apps-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all"></th>
+                                <th>ID Aplikasi</th>
+                                <th>URL</th>
+                                <th>Status</th>
+                                <th>Terakhir Diperiksa</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="apps-list">
+                            <!-- Daftar aplikasi akan dimuat di sini -->
+                        </tbody>
+                    </table>
                 </div>
+                <button id="batch-delete-btn" class="btn btn-danger" disabled>
+                    <i class="fas fa-trash"></i> Hapus yang Dipilih
+                </button>
+            </div>
+
+            <div class="card">
+                <h2><i class="fab fa-telegram"></i> Konfigurasi Bot Telegram</h2>
+                <div class="form-group">
+                    <label for="bot-token">Token Bot Telegram:</label>
+                    <input type="text" id="bot-token" placeholder="Masukkan token bot Anda">
+                </div>
+                <div class="form-group">
+                    <label for="chat-id">ID Chat/Group Telegram:</label>
+                    <input type="text" id="chat-id" placeholder="Masukkan ID chat/group">
+                </div>
+                <div class="form-group">
+                    <label for="message-template">Template Pesan Notifikasi:</label>
+                    <textarea id="message-template" rows="3" placeholder="Contoh: ⚠️ PERINGATAN! Aplikasi {app_id} telah dihapus dari Google Play Store!">⚠️ PERINGATAN! Aplikasi {app_id} telah dihapus dari Google Play Store!</textarea>
+                </div>
+                <button id="save-bot-config" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Simpan Konfigurasi Bot
+                </button>
+                <button id="test-bot" class="btn btn-secondary">
+                    <i class="fas fa-paper-plane"></i> Test Bot
+                </button>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-info-circle"></i> Informasi Sistem</h2>
+                <div class="system-info">
+                    <p><strong>Status Monitoring:</strong> <span id="monitoring-status">Aktif</span></p>
+                    <p><strong>Interval Pengecekan:</strong> <span id="check-interval">30</span> detik</p>
+                    <p><strong>Pengecekan Terakhir:</strong> <span id="last-check">-</span></p>
+                    <p><strong>Pengecekan Berikutnya:</strong> <span id="next-check">-</span></p>
+                </div>
+                <button id="toggle-monitoring" class="btn btn-warning">
+                    <i class="fas fa-pause"></i> Hentikan Monitoring
+                </button>
             </div>
         </div>
-        
-        <div class="footer">
-            <p>MCC Event Activator - Enhanced &copy; 2023 - Sistem pengaktifan event otomatis untuk MCC</p>
+
+        <footer>
+            <p>&copy; 2023 Monitor Aplikasi Play Store. Dibuat dengan <i class="fas fa-heart"></i></p>
+        </footer>
+    </div>
+
+    <!-- Modal untuk konfirmasi -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <h3>Konfirmasi</h3>
+            <p id="confirm-message">Apakah Anda yakin ingin menghapus aplikasi yang dipilih?</p>
+            <div class="modal-actions">
+                <button id="confirm-cancel" class="btn btn-secondary">Batal</button>
+                <button id="confirm-ok" class="btn btn-danger">Ya, Hapus</button>
+            </div>
         </div>
     </div>
 
-    <!-- Notification -->
-    <div id="notification" class="notification"></div>
+    <!-- Modal untuk pesan sukses/error -->
+    <div id="message-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="message-title">Sukses</h3>
+            <p id="message-text">Operasi berhasil dilakukan.</p>
+            <div class="modal-actions">
+                <button id="message-close" class="btn btn-primary">Tutup</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- Font Awesome for Icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-    <script>
-        // Login Functionality
-        document.getElementById('loginBtn').addEventListener('click', function() {
-            const password = document.getElementById('passwordInput').value;
-            if (password === 'xiaogui') {
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainApp').classList.remove('hidden');
-                showNotification('Login berhasil!', 'success');
-            } else {
-                showNotification('Sandi salah!', 'error');
-            }
-        });
-
-        // Enter key for login
-        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('loginBtn').click();
-            }
-        });
-
-        // Counter functionality
-        document.getElementById('increaseCount').addEventListener('click', function() {
-            const countInput = document.getElementById('activationCount');
-            let count = parseInt(countInput.value);
-            countInput.value = count + 1;
-        });
-
-        document.getElementById('decreaseCount').addEventListener('click', function() {
-            const countInput = document.getElementById('activationCount');
-            let count = parseInt(countInput.value);
-            if (count > 1) {
-                countInput.value = count - 1;
-            }
-        });
-
-        // Variables for activation process
-        let isActivating = false;
-        let activationProcess = null;
-
-        // Test API Connection
-        document.getElementById('testApiBtn').addEventListener('click', function() {
-            const endpoint = document.getElementById('apiEndpoint').value;
-            const apiKey = document.getElementById('apiKey').value;
-            
-            if (!endpoint || !apiKey) {
-                showNotification('Endpoint dan API Key harus diisi!', 'error');
-                return;
-            }
-            
-            testApiConnection(endpoint, apiKey);
-        });
-
-        // Activate button functionality
-        document.getElementById('activateBtn').addEventListener('click', function() {
-            if (isActivating) return;
-            
-            const mccList = document.getElementById('mccList').value.split('\n').filter(mcc => mcc.trim() !== '');
-            const appList = document.getElementById('appList').value.split('\n').filter(app => app.trim() !== '');
-            const activationCount = parseInt(document.getElementById('activationCount').value);
-            const delay = parseInt(document.getElementById('delayInput').value);
-            const endpoint = document.getElementById('apiEndpoint').value;
-            const apiKey = document.getElementById('apiKey').value;
-            
-            // Get selected events
-            const selectedEvents = [];
-            if (document.getElementById('eventFirstOpen').checked) selectedEvents.push('first_open');
-            if (document.getElementById('eventFirstRecharge').checked) selectedEvents.push('firstrecharge');
-            if (document.getElementById('eventLogin').checked) selectedEvents.push('login');
-            if (document.getElementById('eventRecharge').checked) selectedEvents.push('recharge');
-            if (document.getElementById('eventRegister').checked) selectedEvents.push('register');
-            
-            if (mccList.length === 0) {
-                showNotification('Masukkan minimal satu MCC!', 'error');
-                return;
-            }
-            
-            if (appList.length === 0) {
-                showNotification('Masukkan minimal satu nama paket aplikasi!', 'error');
-                return;
-            }
-            
-            if (selectedEvents.length === 0) {
-                showNotification('Pilih minimal satu event!', 'error');
-                return;
-            }
-            
-            if (!endpoint || !apiKey) {
-                showNotification('Endpoint dan API Key harus diisi!', 'error');
-                return;
-            }
-            
-            // Start activation process
-            startActivation(mccList, appList, selectedEvents, activationCount, delay, endpoint, apiKey);
-        });
-
-        // Stop button functionality
-        document.getElementById('stopBtn').addEventListener('click', function() {
-            if (isActivating && activationProcess) {
-                clearTimeout(activationProcess);
-                isActivating = false;
-                document.getElementById('activateBtn').classList.remove('hidden');
-                document.getElementById('stopBtn').classList.add('hidden');
-                showNotification('Proses dihentikan!', 'warning');
-            }
-        });
-
-        // Function to test API connection
-        function testApiConnection(endpoint, apiKey) {
-            showNotification('Menguji koneksi API...', 'info');
-            
-            // Simulate API test
-            setTimeout(() => {
-                // In a real implementation, you would make an actual API call here
-                const success = Math.random() > 0.2; // 80% success rate for demo
-                
-                if (success) {
-                    showNotification('Koneksi API berhasil!', 'success');
-                } else {
-                    showNotification('Koneksi API gagal. Periksa endpoint dan API key.', 'error');
-                }
-            }, 1500);
-        }
-
-        // Function to start activation process
-        function startActivation(mccList, appList, events, count, delay, endpoint, apiKey) {
-            isActivating = true;
-            document.getElementById('activateBtn').classList.add('hidden');
-            document.getElementById('stopBtn').classList.remove('hidden');
-            
-            const totalCombinations = mccList.length * appList.length * events.length * count;
-            let completed = 0;
-            
-            // Clear previous results
-            document.getElementById('resultContainer').innerHTML = '';
-            
-            // Update progress
-            updateProgress(0, totalCombinations);
-            
-            // Sort events in recommended order for better acceptance
-            const sortedEvents = sortEvents(events);
-            
-            // Function to process next activation
-            function processNext(mccIndex, appIndex, eventIndex, activationIndex) {
-                if (!isActivating) return;
-                
-                const mcc = mccList[mccIndex];
-                const app = appList[appIndex];
-                const event = sortedEvents[eventIndex];
-                
-                // Generate realistic event data
-                const eventData = generateEventData(mcc, app, event, activationIndex);
-                
-                // Make API call to activate event
-                sendEventToMCC(endpoint, apiKey, eventData)
-                    .then(result => {
-                        completed++;
-                        updateProgress(completed, totalCombinations);
-                        
-                        // Display result
-                        displayResult(mcc, app, event, activationIndex, result);
-                        
-                        // Determine next indices
-                        let nextActivationIndex = activationIndex + 1;
-                        let nextEventIndex = eventIndex;
-                        let nextAppIndex = appIndex;
-                        let nextMccIndex = mccIndex;
-                        
-                        if (nextActivationIndex >= count) {
-                            nextActivationIndex = 0;
-                            nextEventIndex = eventIndex + 1;
-                            
-                            if (nextEventIndex >= sortedEvents.length) {
-                                nextEventIndex = 0;
-                                nextAppIndex = appIndex + 1;
-                                
-                                if (nextAppIndex >= appList.length) {
-                                    nextAppIndex = 0;
-                                    nextMccIndex = mccIndex + 1;
-                                }
-                            }
-                        }
-                        
-                        // Check if we've processed all combinations
-                        if (nextMccIndex >= mccList.length) {
-                            // All done
-                            isActivating = false;
-                            document.getElementById('activateBtn').classList.remove('hidden');
-                            document.getElementById('stopBtn').classList.add('hidden');
-                            showNotification('Semua event berhasil diaktifkan!', 'success');
-                            return;
-                        }
-                        
-                        // Schedule next activation
-                        activationProcess = setTimeout(() => {
-                            processNext(nextMccIndex, nextAppIndex, nextEventIndex, nextActivationIndex);
-                        }, delay);
-                    })
-                    .catch(error => {
-                        completed++;
-                        updateProgress(completed, totalCombinations);
-                        
-                        // Display error result
-                        displayResult(mcc, app, event, activationIndex, {success: false, error: error.message});
-                        
-                        // Continue with next activation even if there's an error
-                        activationProcess = setTimeout(() => {
-                            processNext(mccIndex, appIndex, eventIndex, activationIndex);
-                        }, delay);
-                    });
-            }
-            
-            // Start the process
-            processNext(0, 0, 0, 0);
-        }
-
-        // Function to sort events in recommended order
-        function sortEvents(events) {
-            const order = ['first_open', 'register', 'login', 'firstrecharge', 'recharge'];
-            return events.sort((a, b) => {
-                return order.indexOf(a) - order.indexOf(b);
-            });
-        }
-
-        // Function to generate realistic event data
-        function generateEventData(mcc, app, event, activationIndex) {
-            const timestamp = new Date().toISOString();
-            const eventId = generateEventId();
-            const userId = generateUserId(mcc, app, activationIndex);
-            
-            // Base event structure
-            const eventData = {
-                event_name: event,
-                event_timestamp: timestamp,
-                event_id: eventId,
-                user_id: userId,
-                mcc_code: mcc,
-                app_package: app,
-                device_id: generateDeviceId(app, activationIndex),
-                session_id: generateSessionId(),
-                platform: 'android',
-                app_version: '1.0.' + Math.floor(Math.random() * 10),
-                os_version: 'Android ' + (8 + Math.floor(Math.random() * 5)),
-                device_model: getRandomDeviceModel(),
-                language: 'id_ID',
-                timezone: 'Asia/Jakarta',
-                ip_address: generateRandomIP()
-            };
-            
-            // Add event-specific parameters
-            switch(event) {
-                case 'first_open':
-                    eventData.install_time = new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString();
-                    eventData.first_launch = true;
-                    break;
-                    
-                case 'register':
-                    eventData.registration_method = ['email', 'phone', 'google', 'facebook'][Math.floor(Math.random() * 4)];
-                    eventData.registration_time = timestamp;
-                    break;
-                    
-                case 'login':
-                    eventData.login_method = ['email', 'phone', 'google', 'facebook'][Math.floor(Math.random() * 4)];
-                    eventData.login_count = activationIndex + 1;
-                    break;
-                    
-                case 'firstrecharge':
-                case 'recharge':
-                    eventData.amount = Math.floor(Math.random() * 1000000) + 1000;
-                    eventData.currency = 'IDR';
-                    eventData.payment_method = ['credit_card', 'bank_transfer', 'e-wallet', 'virtual_account'][Math.floor(Math.random() * 4)];
-                    eventData.transaction_id = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
-                    break;
-            }
-            
-            return eventData;
-        }
-
-        // Function to send event to MCC API
-        function sendEventToMCC(endpoint, apiKey, eventData) {
-            return new Promise((resolve, reject) => {
-                // Simulate API call delay
-                const delay = Math.random() * 1000 + 500;
-                
-                setTimeout(() => {
-                    // Simulate different response scenarios
-                    const scenario = Math.random();
-                    
-                    if (scenario < 0.7) {
-                        // Success scenario (70% chance)
-                        resolve({
-                            success: true,
-                            message: `Event ${eventData.event_name} berhasil dikirim ke MCC`,
-                            event_id: eventData.event_id,
-                            timestamp: new Date().toISOString()
-                        });
-                    } else if (scenario < 0.85) {
-                        // Temporary failure (15% chance)
-                        reject({
-                            success: false,
-                            error: `Timeout saat mengirim event ${eventData.event_name}`
-                        });
-                    } else if (scenario < 0.95) {
-                        // Validation error (10% chance)
-                        reject({
-                            success: false,
-                            error: `Data event ${eventData.event_name} tidak valid`
-                        });
-                    } else {
-                        // Authentication error (5% chance)
-                        reject({
-                            success: false,
-                            error: `Autentikasi gagal untuk event ${eventData.event_name}`
-                        });
-                    }
-                }, delay);
-            });
-        }
-
-        // Helper functions for generating realistic data
-        function generateEventId() {
-            return 'EVT' + Date.now() + Math.floor(Math.random() * 1000);
-        }
-
-        function generateUserId(mcc, app, index) {
-            const base = mcc + '_' + app.replace(/\./g, '') + '_';
-            return base + (index + 1) + '_' + Math.floor(Math.random() * 10000);
-        }
-
-        function generateDeviceId(app, index) {
-            const base = app.replace(/\./g, '').substring(0, 5).toUpperCase();
-            return base + (index + 1) + '_' + Math.floor(Math.random() * 1000000);
-        }
-
-        function generateSessionId() {
-            return 'SES' + Date.now() + Math.floor(Math.random() * 1000);
-        }
-
-        function getRandomDeviceModel() {
-            const models = [
-                'Samsung Galaxy S21', 'Xiaomi Redmi Note 10', 'OPPO A74', 
-                'Vivo Y20', 'Realme 8', 'iPhone 12', 'iPhone 13', 
-                'Google Pixel 5', 'OnePlus 9', 'Huawei P40'
-            ];
-            return models[Math.floor(Math.random() * models.length)];
-        }
-
-        function generateRandomIP() {
-            return `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
-        }
-
-        // Function to update progress bar
-        function updateProgress(completed, total) {
-            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-            document.getElementById('progressBar').style.width = `${percentage}%`;
-            document.getElementById('progressText').textContent = `${percentage}% (${completed}/${total})`;
-        }
-
-        // Function to display result
-        function displayResult(mcc, app, event, activationIndex, result) {
-            const resultContainer = document.getElementById('resultContainer');
-            const resultBox = document.createElement('div');
-            resultBox.className = `result-box ${result.success ? 'success' : 'error'}`;
-            
-            const resultHeader = document.createElement('div');
-            resultHeader.className = 'result-header';
-            
-            const resultTitle = document.createElement('div');
-            resultTitle.className = 'result-title';
-            resultTitle.textContent = `MCC: ${mcc} | App: ${app} | Event: ${event} | #${activationIndex + 1}`;
-            
-            const resultStatus = document.createElement('div');
-            resultStatus.className = `result-status ${result.success ? 'status-success' : 'status-error'}`;
-            resultStatus.textContent = result.success ? 'BERHASIL' : 'GAGAL';
-            
-            resultHeader.appendChild(resultTitle);
-            resultHeader.appendChild(resultStatus);
-            
-            const resultMessage = document.createElement('div');
-            resultMessage.textContent = result.success ? result.message : result.error;
-            
-            if (result.success && result.event_id) {
-                const eventId = document.createElement('div');
-                eventId.style.fontSize = '12px';
-                eventId.style.color = '#666';
-                eventId.textContent = `Event ID: ${result.event_id}`;
-                resultMessage.appendChild(eventId);
-            }
-            
-            resultBox.appendChild(resultHeader);
-            resultBox.appendChild(resultMessage);
-            
-            // Add to top of results
-            resultContainer.insertBefore(resultBox, resultContainer.firstChild);
-            
-            // Limit to 50 results to prevent performance issues
-            if (resultContainer.children.length > 50) {
-                resultContainer.removeChild(resultContainer.lastChild);
-            }
-        }
-
-        // Function to show notification
-        function showNotification(message, type) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = 'notification';
-            
-            if (type === 'error') {
-                notification.classList.add('error');
-            } else if (type === 'warning') {
-                notification.style.background = 'var(--warning)';
-                notification.style.color = 'var(--dark)';
-            } else if (type === 'info') {
-                notification.style.background = 'var(--info)';
-            }
-            
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Add some sample data for demonstration
-        window.addEventListener('load', function() {
-            document.getElementById('mccList').value = "MCC001\nMCC002\nMCC003";
-            document.getElementById('appList').value = "com.EightCubes\ncom.ExampleApp\ncom.TestApplication";
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
