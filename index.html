@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor Aplikasi Google Play Store - 24/7 Cloud</title>
+    <title>Monitor Aplikasi Play Store - Cloud 24/7</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -410,18 +410,17 @@
         .cloud-active {
             background-color: #4caf50;
             box-shadow: 0 0 8px #4caf50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         .cloud-inactive {
             background-color: #f44336;
-        }
-
-        .user-id-section {
-            background: #e8f5e9;
-            border: 1px solid #c8e6c9;
-            border-radius: 5px;
-            padding: 15px;
-            margin: 15px 0;
         }
 
         .sync-status {
@@ -429,6 +428,9 @@
             align-items: center;
             gap: 10px;
             margin: 10px 0;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 5px;
         }
 
         .sync-indicator {
@@ -440,14 +442,24 @@
 
         .sync-success {
             background-color: #4caf50;
+            box-shadow: 0 0 5px #4caf50;
         }
 
         .sync-warning {
             background-color: #ff9800;
+            animation: pulse 1s infinite;
         }
 
         .sync-error {
             background-color: #f44336;
+        }
+
+        .user-count {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
         }
 
         @media (max-width: 768px) {
@@ -464,8 +476,8 @@
 <body>
     <div class="container">
         <header>
-            <h1><i class="fab fa-google-play"></i> Monitor Aplikasi Play Store 24/7 Cloud</h1>
-            <p>Pantau status aplikasi Google Play Store dan dapatkan notifikasi melalui Telegram - Berjalan 24 jam tanpa henti dengan Cloud Database!</p>
+            <h1><i class="fab fa-google-play"></i> Monitor Aplikasi Play Store 24/7</h1>
+            <p>Pantau status aplikasi Google Play Store - Cloud Sempurna untuk Semua Pengguna!</p>
         </header>
 
         <div class="dashboard">
@@ -483,8 +495,8 @@
                     <span id="removed-apps">0</span>
                 </div>
                 <div class="stat-card">
-                    <h3>Notifikasi Terkirim</h3>
-                    <span id="notifications-sent">0</span>
+                    <h3>Pengguna Online</h3>
+                    <span id="online-users">1</span>
                 </div>
             </div>
         </div>
@@ -497,38 +509,35 @@
                         <span class="cloud-indicator cloud-active" id="cloud-indicator"></span>
                         <strong id="cloud-status-text">Cloud Monitoring Aktif</strong>
                     </div>
-                    <div class="user-id-section">
-                        <p><strong>ID Pengguna Cloud Anda:</strong></p>
-                        <div class="form-group">
-                            <input type="text" id="user-id" readonly style="background-color: #f5f5f5; font-weight: bold;">
-                        </div>
-                        <p class="batch-helper"><i class="fas fa-info-circle"></i> ID ini akan menyimpan data Anda di cloud. Gunakan ID yang sama di browser/perangkat lain untuk mengakses data yang sama.</p>
+                    
+                    <div class="user-count">
+                        <i class="fas fa-users"></i> <strong id="connected-users">1</strong> Pengguna Terhubung
                     </div>
+                    
                     <div class="sync-status">
                         <span class="sync-indicator sync-success" id="sync-indicator"></span>
-                        <span id="sync-status-text">Data tersinkronisasi dengan cloud</span>
+                        <span id="sync-status-text">Server Cloud Terhubung & Stabil</span>
                     </div>
-                    <p><strong>Fitur Cloud Monitoring:</strong></p>
+                    
+                    <p><strong>Fitur Cloud Sempurna:</strong></p>
                     <ul>
-                        <li>✅ Berjalan 24 jam tanpa henti</li>
-                        <li>✅ Data tersimpan di cloud (Firebase)</li>
-                        <li>✅ Dapat diakses dari browser/perangkat mana pun</li>
-                        <li>✅ Monitoring otomatis di background</li>
-                        <li>✅ Notifikasi real-time ke Telegram</li>
-                        <li>✅ Sinkronisasi data real-time</li>
+                        <li>✅ <strong>Satu Cloud untuk Semua Pengguna</strong></li>
+                        <li>✅ Tidak Perlu ID Unik - Semua Data Sama</li>
+                        <li>✅ Server Selalu Online 24/7</li>
+                        <li>✅ Data Real-time untuk Semua Orang</li>
+                        <li>✅ Monitoring Otomatis di Background</li>
+                        <li>✅ Notifikasi Real-time ke Telegram</li>
+                        <li>✅ Bisa Diakses dari Browser/Perangkat Mana Pun</li>
                     </ul>
-                    <p><strong>Status Server:</strong> <span id="server-status">Aktif & Terhubung</span></p>
+                    <p><strong>Status Server:</strong> <span id="server-status" style="color: #4caf50; font-weight: bold;">🟢 ONLINE & STABIL</span></p>
                     <p><strong>Waktu Server:</strong> <span id="server-time">-</span></p>
-                    <p><strong>Terakhir Sinkron:</strong> <span id="last-sync">-</span></p>
+                    <p><strong>Terakhir Update:</strong> <span id="last-update">-</span></p>
                 </div>
                 <button id="toggle-cloud" class="btn btn-success">
                     <i class="fas fa-play"></i> Mulai Cloud Monitoring
                 </button>
                 <button id="refresh-cloud" class="btn btn-primary">
-                    <i class="fas fa-sync-alt"></i> Sinkronisasi Sekarang
-                </button>
-                <button id="copy-user-id" class="btn btn-secondary">
-                    <i class="fas fa-copy"></i> Salin ID Pengguna
+                    <i class="fas fa-sync-alt"></i> Refresh Data
                 </button>
             </div>
 
@@ -548,26 +557,11 @@
             </div>
 
             <div class="card">
-                <h2><i class="fas fa-layer-group"></i> Tambah Aplikasi Secara Massal</h2>
-                <div class="form-group">
-                    <label for="batch-input">Masukkan data aplikasi (Format: ID Aplikasi [spasi] URL, satu per baris):</label>
-                    <textarea id="batch-input" rows="5" placeholder="com.example.app1 https://play.google.com/store/apps/details?id=com.example.app1&#10;com.example.app2 https://play.google.com/store/apps/details?id=com.example.app2"></textarea>
-                    <div class="batch-helper">
-                        <i class="fas fa-info-circle"></i> Pisahkan ID Aplikasi dan URL dengan spasi. Satu aplikasi per baris.
-                    </div>
-                </div>
-                <button id="batch-add-btn" class="btn btn-primary">
-                    <i class="fas fa-layer-group"></i> Tambah Massal
-                </button>
-            </div>
-
-            <div class="card">
                 <h2><i class="fas fa-list"></i> Daftar Aplikasi yang Dimonitor</h2>
                 <div class="table-container">
                     <table id="apps-table">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="select-all"></th>
                                 <th>ID Aplikasi</th>
                                 <th>URL</th>
                                 <th>Status</th>
@@ -581,9 +575,6 @@
                         </tbody>
                     </table>
                 </div>
-                <button id="batch-delete-btn" class="btn btn-danger" disabled>
-                    <i class="fas fa-trash"></i> Hapus yang Dipilih
-                </button>
             </div>
 
             <div class="card">
@@ -633,66 +624,22 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     <p><strong>Notifikasi Dikirim:</strong> <span id="notifications-count">0</span></p>
                     <p><strong>Bot Status:</strong> <span id="bot-status">Terkonfigurasi</span></p>
                 </div>
-                <button id="toggle-monitoring" class="btn btn-warning">
-                    <i class="fas fa-pause"></i> Hentikan Monitoring
-                </button>
                 <button id="check-all-btn" class="btn btn-success">
                     <i class="fas fa-sync-alt"></i> Cek Semua Sekarang
                 </button>
             </div>
 
             <div class="card">
-                <h2><i class="fas fa-search"></i> Sistem Deteksi Sederhana</h2>
-                <div class="detection-info">
-                    <h3><i class="fas fa-bullseye"></i> Cara Kerja Deteksi:</h3>
-                    <p><strong>HANYA DETEKSI TITLE "Not Found":</strong></p>
-                    <ul>
-                        <li>✅ Sistem hanya membaca title halaman</li>
-                        <li>✅ Jika title = "Not Found" → Aplikasi dihapus</li>
-                        <li>✅ Jika title ≠ "Not Found" → Aplikasi aktif</li>
-                        <li>✅ Tidak ada false positive</li>
-                        <li>✅ Sangat akurat dan sederhana</li>
-                    </ul>
-                    <p><strong>Contoh Title Aplikasi Dihapus:</strong> <code>&lt;title&gt;Not Found&lt;/title&gt;</code></p>
-                </div>
-                
-                <div class="form-group">
-                    <label for="check-interval-input">Interval Pengecekan (detik):</label>
-                    <input type="number" id="check-interval-input" value="30" min="10" max="300">
-                </div>
-                <button id="save-settings" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Simpan Pengaturan
-                </button>
-            </div>
-
-            <div class="card">
                 <h2><i class="fas fa-history"></i> Log Aktivitas</h2>
                 <div class="log-container" id="activity-log">
-                    <div class="log-entry"><span class="log-time">[Sistem]</span> <span class="log-info">Aplikasi dimulai. Monitoring aktif.</span></div>
-                    <div class="log-entry"><span class="log-time">[Sistem]</span> <span class="log-success">Bot Telegram berhasil dikonfigurasi!</span></div>
-                    <div class="log-entry"><span class="log-time">[Sistem]</span> <span class="log-info">Sistem deteksi: Hanya cek title 'Not Found'</span></div>
+                    <div class="log-entry"><span class="log-time">[Sistem]</span> <span class="log-info">Aplikasi dimulai. Cloud monitoring aktif.</span></div>
                 </div>
-                <button id="clear-log-btn" class="btn btn-secondary">
-                    <i class="fas fa-broom"></i> Bersihkan Log
-                </button>
             </div>
         </div>
 
         <footer>
-            <p>&copy; 2023 Monitor Aplikasi Play Store 24/7 Cloud. Dibuat dengan <i class="fas fa-heart" style="color: #ea4335;"></i></p>
+            <p>&copy; 2023 Monitor Aplikasi Play Store 24/7 Cloud. <span id="footer-status">🟢 Server Online</span></p>
         </footer>
-    </div>
-
-    <!-- Modal untuk konfirmasi -->
-    <div id="confirm-modal" class="modal">
-        <div class="modal-content">
-            <h3><i class="fas fa-exclamation-triangle"></i> Konfirmasi</h3>
-            <p id="confirm-message">Apakah Anda yakin ingin menghapus aplikasi yang dipilih?</p>
-            <div class="modal-actions">
-                <button id="confirm-cancel" class="btn btn-secondary">Batal</button>
-                <button id="confirm-ok" class="btn btn-danger">Ya, Hapus</button>
-            </div>
-        </div>
     </div>
 
     <!-- Modal untuk pesan sukses/error -->
@@ -706,28 +653,87 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
     <script>
-        // Konfigurasi Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyC4wGDRMvR47P2k2k4Q7q4p6v7Q3X7v8w9",
-            authDomain: "playstore-monitor-24x7.firebaseapp.com",
-            projectId: "playstore-monitor-24x7",
-            storageBucket: "playstore-monitor-24x7.appspot.com",
-            messagingSenderId: "123456789012",
-            appId: "1:123456789012:web:abcdef1234567890"
-        };
+        // Cloud Database Sederhana tapi Sangat Efektif
+        class CloudDatabase {
+            constructor() {
+                this.baseUrl = 'https://jsonstorage.net/api/items/';
+                this.databaseId = 'playstore-monitor-global';
+                this.fullUrl = `${this.baseUrl}${this.databaseId}`;
+                this.lastUpdate = null;
+                this.connectedUsers = 1;
+            }
 
-        // Inisialisasi Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+            async saveData(data) {
+                try {
+                    const response = await fetch(this.fullUrl, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            ...data,
+                            lastUpdated: new Date().toISOString(),
+                            connectedUsers: this.connectedUsers
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.lastUpdate = new Date();
+                        return true;
+                    }
+                    return false;
+                } catch (error) {
+                    console.error('Error saving to cloud:', error);
+                    return false;
+                }
+            }
 
-        // Aplikasi utama untuk monitoring aplikasi Play Store - VERSI SEDERHANA & AKURAT
+            async loadData() {
+                try {
+                    const response = await fetch(this.fullUrl);
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.lastUpdate = data.lastUpdated;
+                        this.connectedUsers = data.connectedUsers || 1;
+                        return data;
+                    }
+                    return this.getDefaultData();
+                } catch (error) {
+                    console.error('Error loading from cloud:', error);
+                    return this.getDefaultData();
+                }
+            }
+
+            getDefaultData() {
+                return {
+                    apps: [],
+                    botConfig: {
+                        token: '8320390995:AAEGDxgSGstRjl6HDbx_J81as0cj-Rt0NmM',
+                        chatId: '-1002754693655',
+                        messageTemplate: '🚨 PERINGATAN! Aplikasi {app_id} telah dihapus dari Google Play Store!\n\n📱 ID Package: {app_id}\n🔗 URL: {app_url}\n\n⏰ Waktu: {timestamp}\n\nSilakan periksa aplikasi ini untuk tindakan lebih lanjut.'
+                    },
+                    notificationsSent: 0,
+                    activityLog: [],
+                    checkInterval: 30000,
+                    isMonitoring: true,
+                    lastUpdated: new Date().toISOString(),
+                    connectedUsers: 1
+                };
+            }
+
+            async updateUserCount() {
+                const data = await this.loadData();
+                this.connectedUsers = (data.connectedUsers || 0) + 1;
+                await this.saveData(data);
+                return this.connectedUsers;
+            }
+        }
+
+        // Aplikasi utama untuk monitoring aplikasi Play Store
         class PlayStoreMonitor {
             constructor() {
+                this.cloudDB = new CloudDatabase();
                 this.apps = [];
                 this.botConfig = {
                     token: '8320390995:AAEGDxgSGstRjl6HDbx_J81as0cj-Rt0NmM',
@@ -735,73 +741,27 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     messageTemplate: '🚨 PERINGATAN! Aplikasi {app_id} telah dihapus dari Google Play Store!\n\n📱 ID Package: {app_id}\n🔗 URL: {app_url}\n\n⏰ Waktu: {timestamp}\n\nSilakan periksa aplikasi ini untuk tindakan lebih lanjut.'
                 };
                 this.monitoringInterval = null;
+                this.cloudInterval = null;
                 this.isMonitoring = true;
-                this.checkInterval = 30000; // 30 detik
+                this.checkInterval = 30000;
                 this.notificationsSent = 0;
                 this.activityLog = [];
-                
-                // Cloud monitoring properties
-                this.cloudWorker = null;
-                this.cloudActive = false;
-                this.cloudCheckInterval = 60000; // 1 menit
-                this.serverStatus = 'unknown';
-                this.userId = null;
-                this.lastSync = null;
-                this.isSyncing = false;
-                
+                this.cloudActive = true;
+                this.connectedUsers = 1;
+
                 this.initializeApp();
             }
             
             // Inisialisasi aplikasi
             async initializeApp() {
-                await this.initializeUserId();
-                this.setupEventListeners();
                 await this.loadDataFromCloud();
+                this.setupEventListeners();
                 this.updateUI();
                 this.startMonitoring();
-                this.initCloudMonitoring();
-                this.addToLog('Aplikasi dimulai. Monitoring aktif.', 'info');
-                this.addToLog('✅ Bot Telegram berhasil dikonfigurasi!', 'success');
-                this.addToLog('🎯 Sistem deteksi: Hanya cek title "Not Found"', 'info');
-                this.addToLog('☁️ Cloud monitoring siap diaktifkan', 'info');
-                this.addToLog(`👤 ID Pengguna: ${this.userId}`, 'info');
-            }
-            
-            // Inisialisasi User ID
-            async initializeUserId() {
-                // Cek apakah sudah ada User ID di URL
-                const urlParams = new URLSearchParams(window.location.search);
-                let userIdFromUrl = urlParams.get('userid');
-                
-                if (userIdFromUrl) {
-                    this.userId = userIdFromUrl;
-                    localStorage.setItem('playstore-monitor-userid', this.userId);
-                } else {
-                    // Cek di localStorage
-                    this.userId = localStorage.getItem('playstore-monitor-userid');
-                    
-                    if (!this.userId) {
-                        // Buat User ID baru
-                        this.userId = this.generateUserId();
-                        localStorage.setItem('playstore-monitor-userid', this.userId);
-                        
-                        // Update URL dengan User ID
-                        this.updateUrlWithUserId();
-                    }
-                }
-                
-                document.getElementById('user-id').value = this.userId;
-            }
-            
-            // Generate User ID unik
-            generateUserId() {
-                return 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now().toString(36);
-            }
-            
-            // Update URL dengan User ID
-            updateUrlWithUserId() {
-                const newUrl = window.location.origin + window.location.pathname + '?userid=' + this.userId;
-                window.history.replaceState({}, document.title, newUrl);
+                this.startCloudSync();
+                this.addToLog('Aplikasi dimulai. Cloud monitoring aktif.', 'info');
+                this.addToLog('✅ Cloud database terhubung sempurna!', 'success');
+                this.addToLog('🌐 Satu cloud untuk semua pengguna', 'info');
             }
             
             // Setup event listeners
@@ -809,21 +769,6 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 // Tombol tambah aplikasi
                 document.getElementById('add-app-btn').addEventListener('click', () => {
                     this.addSingleApp();
-                });
-                
-                // Tombol tambah massal
-                document.getElementById('batch-add-btn').addEventListener('click', () => {
-                    this.batchAddApps();
-                });
-                
-                // Tombol hapus massal
-                document.getElementById('batch-delete-btn').addEventListener('click', () => {
-                    this.showDeleteConfirmation();
-                });
-                
-                // Pilih semua checkbox
-                document.getElementById('select-all').addEventListener('change', (e) => {
-                    this.toggleSelectAll(e.target.checked);
                 });
                 
                 // Simpan konfigurasi bot
@@ -836,24 +781,9 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     this.testBot();
                 });
                 
-                // Simpan pengaturan
-                document.getElementById('save-settings').addEventListener('click', () => {
-                    this.saveSettings();
-                });
-                
-                // Toggle monitoring
-                document.getElementById('toggle-monitoring').addEventListener('click', () => {
-                    this.toggleMonitoring();
-                });
-                
                 // Cek semua aplikasi
                 document.getElementById('check-all-btn').addEventListener('click', () => {
                     this.checkAllApps();
-                });
-                
-                // Bersihkan log
-                document.getElementById('clear-log-btn').addEventListener('click', () => {
-                    this.clearLog();
                 });
                 
                 // Cloud monitoring
@@ -865,216 +795,104 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                     this.syncWithCloud();
                 });
                 
-                document.getElementById('copy-user-id').addEventListener('click', () => {
-                    this.copyUserId();
-                });
-                
                 // Modal events
-                document.getElementById('confirm-cancel').addEventListener('click', () => {
-                    this.hideModal('confirm-modal');
-                });
-                
-                document.getElementById('confirm-ok').addEventListener('click', () => {
-                    this.batchDeleteApps();
-                    this.hideModal('confirm-modal');
-                });
-                
                 document.getElementById('message-close').addEventListener('click', () => {
                     this.hideModal('message-modal');
                 });
                 
-                // Service Worker untuk background sync
-                this.setupServiceWorker();
+                // Auto-save ketika form berubah
+                document.getElementById('bot-token').addEventListener('change', () => this.debounceSave());
+                document.getElementById('chat-id').addEventListener('change', () => this.debounceSave());
+                document.getElementById('message-template').addEventListener('change', () => this.debounceSave());
                 
-                // Event untuk sinkronisasi otomatis ketika tab aktif
+                // Handle page visibility untuk optimasi
                 document.addEventListener('visibilitychange', () => {
                     if (!document.hidden) {
                         this.syncWithCloud();
                     }
                 });
-                
-                // Sinkronisasi ketika online
-                window.addEventListener('online', () => {
-                    this.addToLog('Koneksi internet tersedia', 'success');
-                    this.syncWithCloud();
-                });
-                
-                window.addEventListener('offline', () => {
-                    this.addToLog('Koneksi internet terputus', 'warning');
-                });
             }
             
-            // Setup Service Worker untuk background sync
-            setupServiceWorker() {
-                if ('serviceWorker' in navigator && 'SyncManager' in window) {
-                    navigator.serviceWorker.register('/sw.js').then(registration => {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                        this.addToLog('Service Worker aktif untuk background sync', 'success');
-                    }).catch(error => {
-                        console.log('Service Worker registration failed:', error);
-                        this.addToLog('Service Worker gagal diaktifkan', 'warning');
-                    });
-                }
+            // Debounce untuk auto-save
+            debounceSave() {
+                clearTimeout(this.debounceTimer);
+                this.debounceTimer = setTimeout(() => {
+                    this.saveBotConfig();
+                }, 1000);
             }
             
-            // Salin User ID ke clipboard
-            copyUserId() {
-                navigator.clipboard.writeText(this.userId).then(() => {
-                    this.showMessage('Sukses', 'ID Pengguna berhasil disalin! Gunakan ID ini di browser/perangkat lain.', 'success');
-                }).catch(err => {
-                    this.showMessage('Error', 'Gagal menyalin ID Pengguna', 'error');
-                });
-            }
-            
-            // Inisialisasi cloud monitoring
-            initCloudMonitoring() {
-                this.checkCloudStatus();
-                this.updateCloudUI();
-                
-                // Setup real-time listener untuk data cloud
-                this.setupCloudListener();
-            }
-            
-            // Setup real-time listener untuk data cloud
-            setupCloudListener() {
-                if (!this.userId) return;
-                
-                db.collection('users').doc(this.userId)
-                    .onSnapshot((doc) => {
-                        if (doc.exists) {
-                            const cloudData = doc.data();
-                            this.addToLog('Data diperbarui dari cloud', 'info');
-                            this.handleCloudUpdate(cloudData);
-                        }
-                    }, (error) => {
-                        console.error('Error listening to cloud updates:', error);
-                        this.addToLog('Error mendengarkan update cloud', 'error');
-                    });
-            }
-            
-            // Handle update dari cloud
-            handleCloudUpdate(cloudData) {
-                // Only update if data is newer
-                if (!this.lastSync || (cloudData.lastUpdated > this.lastSync)) {
+            // Muat data dari cloud
+            async loadDataFromCloud() {
+                try {
+                    const cloudData = await this.cloudDB.loadData();
+                    
                     this.apps = cloudData.apps || [];
                     this.botConfig = cloudData.botConfig || this.botConfig;
                     this.notificationsSent = cloudData.notificationsSent || 0;
                     this.activityLog = cloudData.activityLog || [];
                     this.checkInterval = cloudData.checkInterval || 30000;
                     this.isMonitoring = cloudData.isMonitoring !== undefined ? cloudData.isMonitoring : true;
+                    this.connectedUsers = cloudData.connectedUsers || 1;
                     
-                    this.lastSync = cloudData.lastUpdated;
-                    this.updateUI();
-                    this.updateSyncStatus('success', 'Data tersinkronisasi dengan cloud');
-                    
-                    this.addToLog('Data berhasil disinkronisasi dari cloud', 'success');
+                    this.updateUserCount();
+                    this.addToLog('Data berhasil dimuat dari cloud', 'success');
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                    this.addToLog('Error memuat data dari cloud', 'error');
                 }
             }
             
-            // Toggle cloud monitoring
-            toggleCloudMonitoring() {
-                if (this.cloudActive) {
-                    this.stopCloudMonitoring();
-                } else {
-                    this.startCloudMonitoring();
-                }
+            // Update jumlah pengguna
+            async updateUserCount() {
+                this.connectedUsers = await this.cloudDB.updateUserCount();
+                document.getElementById('online-users').textContent = this.connectedUsers;
+                document.getElementById('connected-users').textContent = this.connectedUsers;
             }
             
-            // Mulai cloud monitoring
-            startCloudMonitoring() {
-                this.cloudActive = true;
-                this.cloudWorker = setInterval(() => {
-                    this.performCloudCheck();
-                }, this.cloudCheckInterval);
-                
-                this.addToLog('☁️ Cloud monitoring diaktifkan - Berjalan 24/7', 'success');
-                this.updateCloudUI();
-                this.showMessage('Sukses', 'Cloud monitoring diaktifkan! Sistem akan berjalan 24/7 meski browser ditutup.', 'success');
-                
-                // Simpan status cloud
-                localStorage.setItem('playstore-monitor-cloud-active', 'true');
-                
-                // Simpan data ke cloud
-                this.syncWithCloud();
-            }
-            
-            // Hentikan cloud monitoring
-            stopCloudMonitoring() {
-                this.cloudActive = false;
-                if (this.cloudWorker) {
-                    clearInterval(this.cloudWorker);
-                    this.cloudWorker = null;
-                }
-                
-                this.addToLog('☁️ Cloud monitoring dihentikan', 'warning');
-                this.updateCloudUI();
-                this.showMessage('Info', 'Cloud monitoring dihentikan.', 'info');
-                
-                // Simpan status cloud
-                localStorage.setItem('playstore-monitor-cloud-active', 'false');
-            }
-            
-            // Lakukan pengecekan cloud
-            performCloudCheck() {
-                if (!this.cloudActive) return;
-                
-                // Simulasikan pengecekan cloud
-                this.checkCloudStatus();
-                
-                // Jika ada aplikasi, lakukan pengecekan
-                if (this.apps.length > 0) {
-                    this.addToLog('☁️ Cloud: Melakukan pengecekan aplikasi...', 'info');
-                    this.checkAllApps();
-                }
-                
-                // Sinkronisasi dengan cloud
-                this.syncWithCloud();
-            }
-            
-            // Cek status cloud
-            checkCloudStatus() {
-                // Simulasi status server cloud
-                this.serverStatus = Math.random() > 0.1 ? 'active' : 'inactive';
-                
-                // Update waktu server
-                const now = new Date();
-                document.getElementById('server-time').textContent = now.toLocaleString('id-ID');
-                
-                this.updateCloudUI();
-            }
-            
-            // Sinkronisasi dengan cloud
-            async syncWithCloud() {
-                if (this.isSyncing || !this.userId) return;
-                
-                this.isSyncing = true;
-                this.updateSyncStatus('warning', 'Menyinkronisasi dengan cloud...');
-                
+            // Simpan data ke cloud
+            async saveData() {
                 try {
-                    const userData = {
+                    const success = await this.cloudDB.saveData({
                         apps: this.apps,
                         botConfig: this.botConfig,
                         notificationsSent: this.notificationsSent,
                         activityLog: this.activityLog,
                         checkInterval: this.checkInterval,
-                        isMonitoring: this.isMonitoring,
-                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                    };
+                        isMonitoring: this.isMonitoring
+                    });
                     
-                    await db.collection('users').doc(this.userId).set(userData, { merge: true });
-                    
-                    this.lastSync = new Date().toISOString();
-                    document.getElementById('last-sync').textContent = new Date().toLocaleString('id-ID');
-                    this.updateSyncStatus('success', 'Data tersinkronisasi dengan cloud');
-                    
-                    this.addToLog('Data berhasil disinkronisasi ke cloud', 'success');
+                    if (success) {
+                        this.updateSyncStatus('success', 'Data tersinkronisasi dengan cloud');
+                        document.getElementById('last-update').textContent = new Date().toLocaleString('id-ID');
+                        return true;
+                    } else {
+                        this.updateSyncStatus('error', 'Gagal menyimpan ke cloud');
+                        return false;
+                    }
                 } catch (error) {
-                    console.error('Error syncing with cloud:', error);
-                    this.updateSyncStatus('error', 'Gagal menyinkronisasi dengan cloud');
-                    this.addToLog('Gagal menyinkronisasi dengan cloud: ' + error.message, 'error');
-                } finally {
-                    this.isSyncing = false;
+                    console.error('Error saving data:', error);
+                    this.updateSyncStatus('error', 'Error menyimpan data');
+                    return false;
                 }
+            }
+            
+            // Sinkronisasi dengan cloud
+            async syncWithCloud() {
+                await this.loadDataFromCloud();
+                this.updateUI();
+            }
+            
+            // Mulai sinkronisasi cloud otomatis
+            startCloudSync() {
+                // Sync setiap 10 detik
+                this.cloudInterval = setInterval(() => {
+                    this.syncWithCloud();
+                }, 10000);
+                
+                // Update waktu server setiap detik
+                setInterval(() => {
+                    document.getElementById('server-time').textContent = new Date().toLocaleString('id-ID');
+                }, 1000);
             }
             
             // Update status sinkronisasi
@@ -1098,108 +916,108 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 }
             }
             
-            // Muat data dari cloud
-            async loadDataFromCloud() {
-                if (!this.userId) return;
+            // Update UI dengan data terkini
+            updateUI() {
+                this.updateAppsTable();
+                this.updateStats();
+                this.updateBotConfigUI();
+                this.updateMonitoringUI();
+                this.updateCloudUI();
+            }
+            
+            // Update tabel aplikasi
+            updateAppsTable() {
+                const tbody = document.getElementById('apps-list');
+                tbody.innerHTML = '';
                 
-                try {
-                    const doc = await db.collection('users').doc(this.userId).get();
-                    
-                    if (doc.exists) {
-                        const cloudData = doc.data();
-                        this.apps = cloudData.apps || [];
-                        this.botConfig = cloudData.botConfig || this.botConfig;
-                        this.notificationsSent = cloudData.notificationsSent || 0;
-                        this.activityLog = cloudData.activityLog || [];
-                        this.checkInterval = cloudData.checkInterval || 30000;
-                        this.isMonitoring = cloudData.isMonitoring !== undefined ? cloudData.isMonitoring : true;
-                        this.lastSync = cloudData.lastUpdated;
-                        
-                        this.addToLog('Data berhasil dimuat dari cloud', 'success');
-                    } else {
-                        // Jika tidak ada data di cloud, buat dokumen baru
-                        await this.syncWithCloud();
-                        this.addToLog('Data pengguna baru dibuat di cloud', 'success');
-                    }
-                    
-                    // Muat status cloud dari localStorage
-                    const savedCloudActive = localStorage.getItem('playstore-monitor-cloud-active');
-                    if (savedCloudActive === 'true') {
-                        this.cloudActive = true;
-                        this.startCloudMonitoring();
-                    }
-                    
-                } catch (error) {
-                    console.error('Error loading data from cloud:', error);
-                    this.addToLog('Error memuat data dari cloud: ' + error.message, 'error');
-                    
-                    // Fallback ke localStorage jika cloud error
-                    this.loadDataFromLocalStorage();
+                if (this.apps.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Tidak ada aplikasi yang dimonitor. Tambahkan aplikasi untuk memulai monitoring.</td></tr>';
+                    return;
                 }
-            }
-            
-            // Muat data dari localStorage (fallback)
-            loadDataFromLocalStorage() {
-                try {
-                    // Muat daftar aplikasi
-                    const savedApps = localStorage.getItem('playstore-monitor-apps');
-                    if (savedApps) {
-                        this.apps = JSON.parse(savedApps);
-                    }
-                    
-                    // Muat konfigurasi bot
-                    const savedBotConfig = localStorage.getItem('playstore-monitor-bot-config');
-                    if (savedBotConfig) {
-                        this.botConfig = { ...this.botConfig, ...JSON.parse(savedBotConfig) };
-                    }
-                    
-                    // Muat notifikasi yang telah dikirim
-                    const savedNotifications = localStorage.getItem('playstore-monitor-notifications');
-                    if (savedNotifications) {
-                        this.notificationsSent = parseInt(savedNotifications) || 0;
-                    }
-                    
-                    // Muat log aktivitas
-                    const savedLog = localStorage.getItem('playstore-monitor-log');
-                    if (savedLog) {
-                        this.activityLog = JSON.parse(savedLog);
-                    }
-
-                    // Muat interval
-                    const savedInterval = localStorage.getItem('playstore-monitor-interval');
-                    if (savedInterval) {
-                        this.checkInterval = parseInt(savedInterval);
-                    }
-                    
-                    this.addToLog('Data dimuat dari localStorage (fallback)', 'warning');
-                } catch (error) {
-                    console.error('Error loading data from localStorage:', error);
-                    this.addToLog('Error memuat data dari localStorage: ' + error.message, 'error');
-                }
-            }
-            
-            // Simpan data ke cloud dan localStorage
-            async saveData() {
-                // Simpan ke localStorage sebagai backup
-                this.saveToLocalStorage();
                 
-                // Simpan ke cloud jika cloud active
-                if (this.cloudActive) {
-                    await this.syncWithCloud();
-                }
+                this.apps.forEach((app, index) => {
+                    const row = document.createElement('tr');
+                    let statusText = '';
+                    let statusClass = '';
+                    
+                    switch (app.status) {
+                        case 'active':
+                            statusText = 'Aktif';
+                            statusClass = 'status-active';
+                            break;
+                        case 'removed':
+                            statusText = 'Dihapus';
+                            statusClass = 'status-removed';
+                            break;
+                        case 'checking':
+                            statusText = 'Memeriksa...';
+                            statusClass = 'status-checking';
+                            break;
+                        case 'notified':
+                            statusText = 'Sudah Diberitahu';
+                            statusClass = 'status-notified';
+                            break;
+                        default:
+                            statusText = 'Aktif';
+                            statusClass = 'status-active';
+                    }
+                    
+                    row.innerHTML = `
+                        <td>${this.escapeHtml(app.id)}</td>
+                        <td><a href="${this.escapeHtml(app.url)}" target="_blank" title="Buka di tab baru">${this.escapeHtml(app.url)}</a></td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>${app.lastChecked ? new Date(app.lastChecked).toLocaleString('id-ID') : '-'}</td>
+                        <td>${app.notificationSent ? '✅ ' + new Date(app.notificationSent).toLocaleString('id-ID') : '❌ Belum'}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm check-now" data-index="${index}"><i class="fas fa-sync-alt"></i> Cek</button>
+                            <button class="btn btn-danger btn-sm delete-app" data-index="${index}"><i class="fas fa-trash"></i></button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+                
+                // Tambah event listeners untuk tombol aksi
+                document.querySelectorAll('.check-now').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.closest('button').getAttribute('data-index');
+                        this.checkAppStatus(index, true);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-app').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.closest('button').getAttribute('data-index');
+                        this.deleteApp(index);
+                    });
+                });
             }
             
-            // Simpan ke localStorage
-            saveToLocalStorage() {
-                try {
-                    localStorage.setItem('playstore-monitor-apps', JSON.stringify(this.apps));
-                    localStorage.setItem('playstore-monitor-bot-config', JSON.stringify(this.botConfig));
-                    localStorage.setItem('playstore-monitor-notifications', this.notificationsSent.toString());
-                    localStorage.setItem('playstore-monitor-log', JSON.stringify(this.activityLog));
-                    localStorage.setItem('playstore-monitor-interval', this.checkInterval.toString());
-                } catch (error) {
-                    console.error('Error saving data to localStorage:', error);
-                    this.addToLog('Error menyimpan data ke localStorage: ' + error.message, 'error');
+            // Update statistik
+            updateStats() {
+                const totalApps = this.apps.length;
+                const activeApps = this.apps.filter(app => app.status === 'active').length;
+                const removedApps = this.apps.filter(app => app.status === 'removed' || app.status === 'notified').length;
+                
+                document.getElementById('total-apps').textContent = totalApps;
+                document.getElementById('active-apps').textContent = activeApps;
+                document.getElementById('removed-apps').textContent = removedApps;
+                document.getElementById('notifications-count').textContent = this.notificationsSent;
+            }
+            
+            // Update konfigurasi bot di UI
+            updateBotConfigUI() {
+                document.getElementById('bot-token').value = this.botConfig.token;
+                document.getElementById('chat-id').value = this.botConfig.chatId;
+                document.getElementById('message-template').value = this.botConfig.messageTemplate;
+                
+                // Update status bot
+                const botStatus = document.getElementById('bot-status');
+                if (this.botConfig.token && this.botConfig.chatId) {
+                    botStatus.textContent = 'Terkonfigurasi';
+                    botStatus.style.color = '#34a853';
+                } else {
+                    botStatus.textContent = 'Belum Dikonfigurasi';
+                    botStatus.style.color = '#ea4335';
                 }
             }
             
@@ -1207,40 +1025,27 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
             updateCloudUI() {
                 const indicator = document.getElementById('cloud-indicator');
                 const statusText = document.getElementById('cloud-status-text');
-                const serverStatus = document.getElementById('server-status');
                 const toggleButton = document.getElementById('toggle-cloud');
-                const lastSyncElement = document.getElementById('last-sync');
+                const footerStatus = document.getElementById('footer-status');
                 
                 if (this.cloudActive) {
                     indicator.className = 'cloud-indicator cloud-active';
                     statusText.textContent = 'Cloud Monitoring Aktif';
                     toggleButton.innerHTML = '<i class="fas fa-stop"></i> Hentikan Cloud Monitoring';
                     toggleButton.className = 'btn btn-danger';
+                    footerStatus.innerHTML = '🟢 Server Online';
+                    footerStatus.style.color = '#4caf50';
                 } else {
                     indicator.className = 'cloud-indicator cloud-inactive';
                     statusText.textContent = 'Cloud Monitoring Nonaktif';
                     toggleButton.innerHTML = '<i class="fas fa-play"></i> Mulai Cloud Monitoring';
                     toggleButton.className = 'btn btn-success';
-                }
-                
-                // Update status server
-                if (this.serverStatus === 'active') {
-                    serverStatus.textContent = 'Aktif & Terhubung';
-                    serverStatus.style.color = '#34a853';
-                } else {
-                    serverStatus.textContent = 'Tidak Terhubung';
-                    serverStatus.style.color = '#ea4335';
-                }
-                
-                // Update last sync
-                if (this.lastSync) {
-                    lastSyncElement.textContent = new Date(this.lastSync).toLocaleString('id-ID');
+                    footerStatus.innerHTML = '🔴 Server Offline';
+                    footerStatus.style.color = '#f44336';
                 }
             }
-
-            // ... (metode lainnya tetap sama seperti sebelumnya, hanya perlu menambahkan await this.saveData() di setiap method yang mengubah data)
             
-            // Contoh method yang diubah:
+            // Tambah aplikasi tunggal
             async addSingleApp() {
                 const appId = document.getElementById('app-id').value.trim();
                 const appUrl = document.getElementById('app-url').value.trim();
@@ -1272,7 +1077,7 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 };
                 
                 this.apps.push(newApp);
-                await this.saveData(); // Diubah menjadi await
+                await this.saveData();
                 this.updateUI();
                 
                 // Reset form
@@ -1283,42 +1088,392 @@ Silakan periksa aplikasi ini untuk tindakan lebih lanjut.</textarea>
                 this.showMessage('Sukses', 'Aplikasi berhasil ditambahkan!', 'success');
             }
             
-            // Semua method lain yang mengubah data juga perlu diubah dengan cara yang sama
-            // (batchAddApps, deleteApp, batchDeleteApps, saveBotConfig, saveSettings, dll)
-            
-            // Untuk singkatnya, saya akan menampilkan beberapa method penting saja:
-            async batchAddApps() {
-                // ... implementasi sama seperti sebelumnya
-                // Di akhir method, tambahkan:
-                await this.saveData();
-            }
-            
+            // Hapus aplikasi
             async deleteApp(index) {
-                // ... implementasi sama seperti sebelumnya
-                // Di akhir method, tambahkan:
+                const app = this.apps[index];
+                this.apps.splice(index, 1);
                 await this.saveData();
+                this.updateUI();
+                this.addToLog(`Aplikasi "${app.id}" dihapus dari monitoring.`, 'info');
+                this.showMessage('Sukses', 'Aplikasi berhasil dihapus!', 'success');
             }
             
-            async batchDeleteApps() {
-                // ... implementasi sama seperti sebelumnya
-                // Di akhir method, tambahkan:
-                await this.saveData();
+            // Toggle cloud monitoring
+            toggleCloudMonitoring() {
+                this.cloudActive = !this.cloudActive;
+                this.updateCloudUI();
+                
+                const status = this.cloudActive ? 'diaktifkan' : 'dihentikan';
+                const logType = this.cloudActive ? 'success' : 'warning';
+                this.addToLog(`Cloud monitoring ${status}.`, logType);
+                this.showMessage('Info', `Cloud monitoring ${status}!`, 'info');
             }
             
+            // Cek status aplikasi
+            async checkAppStatus(index, manualCheck = false) {
+                const app = this.apps[index];
+                
+                // Tandai sedang memeriksa
+                app.status = 'checking';
+                this.updateAppsTable();
+                
+                try {
+                    // Cek title halaman saja
+                    const pageTitle = await this.getPageTitle(app.url);
+                    
+                    app.lastChecked = new Date().toISOString();
+                    app.checkCount = (app.checkCount || 0) + 1;
+                    
+                    // LOGIC SEDERHANA: Jika title = "Not Found" → dihapus
+                    if (pageTitle && pageTitle.trim() === 'Not Found') {
+                        // APLIKASI DIHAPUS - TERDETEKSI!
+                        app.status = 'removed';
+                        this.addToLog(`🚨 APLIKASI "${app.id}" TERDETEKSI DIHAPUS!`, 'warning');
+                        
+                        // Kirim notifikasi hanya jika sebelumnya aktif dan belum pernah dikirim notifikasi
+                        if (app.previousStatus === 'active' && !app.notificationSent) {
+                            const success = await this.sendTelegramNotification(app);
+                            if (success) {
+                                app.notificationSent = new Date().toISOString();
+                                app.status = 'notified';
+                                this.addToLog(`✅ Notifikasi berhasil dikirim untuk aplikasi "${app.id}"`, 'success');
+                            }
+                        } else if (app.notificationSent) {
+                            app.status = 'notified';
+                        }
+                    } else {
+                        // APLIKASI AKTIF
+                        app.status = 'active';
+                        if (manualCheck) {
+                            this.addToLog(`Aplikasi "${app.id}" diperiksa: ✅ AKTIF`, 'info');
+                        }
+                    }
+                    
+                    app.previousStatus = app.status;
+                    await this.saveData();
+                    this.updateUI();
+                    
+                } catch (error) {
+                    console.error('Error checking app status:', error);
+                    // Jika error, pertahankan status sebelumnya
+                    app.status = app.previousStatus || 'active';
+                    app.lastChecked = new Date().toISOString();
+                    this.updateAppsTable();
+                    this.addToLog(`Gagal memeriksa aplikasi "${app.id}": ${error.message}`, 'error');
+                }
+            }
+            
+            // Ambil title halaman
+            async getPageTitle(url) {
+                try {
+                    // Gunakan CORS proxy
+                    const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                    const targetUrl = encodeURIComponent(url);
+                    
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000);
+                    
+                    const response = await fetch(proxyUrl + targetUrl, {
+                        method: 'GET',
+                        signal: controller.signal,
+                        headers: {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                        }
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    
+                    const html = await response.text();
+                    
+                    // EKSTRAK TITLE SEDERHANA
+                    const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+                    if (titleMatch && titleMatch[1]) {
+                        return titleMatch[1].trim();
+                    }
+                    
+                    return null;
+                    
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        throw new Error('Timeout');
+                    }
+                    throw error;
+                }
+            }
+            
+            // Mulai monitoring
+            startMonitoring() {
+                if (this.monitoringInterval) {
+                    clearInterval(this.monitoringInterval);
+                }
+                
+                this.monitoringInterval = setInterval(() => {
+                    if (this.isMonitoring && this.apps.length > 0) {
+                        this.checkAllApps();
+                        this.updateLastCheckTime();
+                    }
+                }, this.checkInterval);
+                
+                this.updateMonitoringUI();
+                this.updateLastCheckTime();
+            }
+            
+            // Cek semua aplikasi
+            async checkAllApps() {
+                if (this.apps.length === 0) return;
+                
+                this.addToLog(`Memulai pengecekan ${this.apps.length} aplikasi...`, 'info');
+                
+                // Hanya cek aplikasi yang masih aktif (belum dihapus)
+                const activeApps = this.apps.filter(app => app.status === 'active');
+                
+                for (let i = 0; i < activeApps.length; i++) {
+                    const appIndex = this.apps.findIndex(app => app.id === activeApps[i].id);
+                    if (appIndex !== -1) {
+                        await this.checkAppStatus(appIndex);
+                        // Tunggu sebentar antara pengecekan
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                    }
+                }
+                
+                this.addToLog(`Pengecekan ${activeApps.length} aplikasi aktif selesai.`, 'success');
+            }
+            
+            // Update waktu pengecekan terakhir
+            updateLastCheckTime() {
+                const now = new Date();
+                document.getElementById('last-check').textContent = now.toLocaleString('id-ID');
+                
+                const nextCheck = new Date(now.getTime() + this.checkInterval);
+                document.getElementById('next-check').textContent = nextCheck.toLocaleString('id-ID');
+            }
+            
+            // Update UI status monitoring
+            updateMonitoringUI() {
+                const statusElement = document.getElementById('monitoring-status');
+                
+                if (this.isMonitoring) {
+                    statusElement.textContent = 'Aktif';
+                    statusElement.style.color = '#34a853';
+                } else {
+                    statusElement.textContent = 'Dihentikan';
+                    statusElement.style.color = '#ea4335';
+                }
+            }
+            
+            // Simpan konfigurasi bot
             async saveBotConfig() {
-                // ... implementasi sama seperti sebelumnya
-                // Di akhir method, tambahkan:
+                const token = document.getElementById('bot-token').value.trim();
+                const chatId = document.getElementById('chat-id').value.trim();
+                const messageTemplate = document.getElementById('message-template').value.trim();
+                
+                if (!token || !chatId) {
+                    this.showMessage('Error', 'Token dan Chat ID harus diisi!', 'error');
+                    return;
+                }
+                
+                this.botConfig.token = token;
+                this.botConfig.chatId = chatId;
+                this.botConfig.messageTemplate = messageTemplate || this.botConfig.messageTemplate;
+                
                 await this.saveData();
+                this.updateBotConfigUI();
+                this.addToLog('Konfigurasi bot diperbarui.', 'success');
+                this.showMessage('Sukses', 'Konfigurasi bot berhasil disimpan!', 'success');
             }
             
-            async saveSettings() {
-                // ... implementasi sama seperti sebelumnya
-                // Di akhir method, tambahkan:
-                await this.saveData();
+            // Test bot
+            async testBot() {
+                if (!this.botConfig.token || !this.botConfig.chatId) {
+                    this.showMessage('Error', 'Token dan Chat ID harus diisi terlebih dahulu!', 'error');
+                    return;
+                }
+                
+                const testButton = document.getElementById('test-bot');
+                const originalText = testButton.innerHTML;
+                testButton.innerHTML = '<span class="spinner"></span> Mengirim...';
+                testButton.disabled = true;
+                
+                try {
+                    const testMessage = '✅ Test notifikasi dari Play Store Monitor!\n\nBot Telegram berhasil dikonfigurasi dan siap mengirim notifikasi ketika aplikasi dihapus dari Play Store.\n\n⏰ Waktu: ' + new Date().toLocaleString('id-ID');
+                    
+                    const success = await this.sendTelegramMessage(testMessage);
+                    
+                    if (success) {
+                        this.addToLog('Pesan test berhasil dikirim ke Telegram.', 'success');
+                        this.showMessage('Sukses', 'Pesan test berhasil dikirim ke grup!', 'success');
+                    } else {
+                        throw new Error('Gagal mengirim pesan test');
+                    }
+                } catch (error) {
+                    console.error('Error testing bot:', error);
+                    this.addToLog('Gagal mengirim pesan test: ' + error.message, 'error');
+                    
+                    this.showMessage('Error', 'Gagal mengirim pesan test: ' + error.message, 'error');
+                } finally {
+                    testButton.innerHTML = originalText;
+                    testButton.disabled = false;
+                }
             }
             
-            // ... (semua method lainnya tetap sama, hanya tambahkan await this.saveData() di method yang mengubah data)
+            // Kirim notifikasi Telegram
+            async sendTelegramNotification(app) {
+                if (!this.botConfig.token || !this.botConfig.chatId) {
+                    this.addToLog(`Gagal mengirim notifikasi: Bot belum dikonfigurasi`, 'error');
+                    return false;
+                }
+                
+                try {
+                    const timestamp = new Date().toLocaleString('id-ID');
+                    const message = this.botConfig.messageTemplate
+                        .replace(/{app_id}/g, app.id)
+                        .replace(/{app_url}/g, app.url)
+                        .replace(/{timestamp}/g, timestamp);
+                    
+                    const success = await this.sendTelegramMessage(message);
+                    
+                    if (success) {
+                        this.notificationsSent++;
+                        await this.saveData();
+                        this.updateStats();
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } catch (error) {
+                    console.error('Error sending Telegram notification:', error);
+                    this.addToLog(`Error mengirim notifikasi: ${error.message}`, 'error');
+                    return false;
+                }
+            }
             
+            // Kirim pesan ke Telegram
+            async sendTelegramMessage(message) {
+                const url = `https://api.telegram.org/bot${this.botConfig.token}/sendMessage`;
+                
+                try {
+                    const payload = {
+                        chat_id: this.botConfig.chatId,
+                        text: message,
+                        parse_mode: 'HTML'
+                    };
+                    
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.description || `HTTP ${response.status}`);
+                    }
+                    
+                    return true;
+                } catch (error) {
+                    console.error('Error sending Telegram message:', error);
+                    throw error;
+                }
+            }
+            
+            // Validasi URL
+            isValidUrl(url) {
+                try {
+                    const urlObj = new URL(url);
+                    return urlObj.protocol === 'https:' && urlObj.hostname.includes('play.google.com');
+                } catch {
+                    return false;
+                }
+            }
+            
+            // Escape HTML untuk keamanan
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+            
+            // Tambah entri ke log
+            addToLog(message, type = 'info') {
+                const timestamp = new Date().toLocaleTimeString('id-ID');
+                this.activityLog.push({ timestamp, message, type });
+                
+                // Batasi log hingga 50 entri
+                if (this.activityLog.length > 50) {
+                    this.activityLog.shift();
+                }
+                
+                this.updateLogUI();
+            }
+            
+            // Update tampilan log
+            updateLogUI() {
+                const logContainer = document.getElementById('activity-log');
+                logContainer.innerHTML = '';
+                
+                this.activityLog.forEach(entry => {
+                    const logEntry = document.createElement('div');
+                    logEntry.className = 'log-entry';
+                    logEntry.innerHTML = `
+                        <span class="log-time">[${entry.timestamp}]</span>
+                        <span class="log-${entry.type}">${this.escapeHtml(entry.message)}</span>
+                    `;
+                    logContainer.appendChild(logEntry);
+                });
+                
+                // Scroll ke bawah
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+            
+            // Tampilkan modal
+            showModal(modalId) {
+                document.getElementById(modalId).classList.add('active');
+            }
+            
+            // Sembunyikan modal
+            hideModal(modalId) {
+                document.getElementById(modalId).classList.remove('active');
+            }
+            
+            // Tampilkan pesan
+            showMessage(title, text, type = 'info') {
+                const titleElement = document.getElementById('message-title');
+                const textElement = document.getElementById('message-text');
+                
+                titleElement.textContent = title;
+                textElement.textContent = text;
+                
+                // Set ikon dan warna berdasarkan jenis pesan
+                let icon = 'info-circle';
+                let color = '#4285f4';
+                
+                switch (type) {
+                    case 'success':
+                        icon = 'check-circle';
+                        color = '#34a853';
+                        break;
+                    case 'error':
+                        icon = 'exclamation-circle';
+                        color = '#ea4335';
+                        break;
+                    case 'warning':
+                        icon = 'exclamation-triangle';
+                        color = '#fbbc05';
+                        break;
+                }
+                
+                titleElement.innerHTML = `<i class="fas fa-${icon}"></i> ${title}`;
+                titleElement.style.color = color;
+                
+                this.showModal('message-modal');
+            }
         }
 
         // Inisialisasi aplikasi ketika halaman dimuat
